@@ -9,3 +9,10 @@ Designed with the following principles in mind:
 * Follows Object Oriented design principles
 * Cross platform
 * Very little boilerplate code
+
+
+
+This project relies on the following libraries:
+
+* glfw (http://www.glfw.org/)
+* libpng (http://www.libpng.org/)
