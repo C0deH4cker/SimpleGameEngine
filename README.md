@@ -18,3 +18,11 @@ This project relies on the following libraries:
 
 
 There is a sample project for this [here](https://github.com/C0deH4cker/Ballz).
+
+
+###TODO:
+
+* Add a SpriteBatch class to make rendering textures faster
+* Fullscreen support
+* Matrices
+* Allow drawing text
