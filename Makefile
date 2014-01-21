@@ -12,6 +12,7 @@ OBJS= Color.o \
 BUILD=build
 CXXFLAGS= -std=c++11
 HEADERS=$(shell find . -not -path "./$(BUILD)/*" -name '*.h')
+DOC_CONFIG=doxygen_config
 
 all:
 	mkdir -p $(BUILD)
@@ -33,6 +34,10 @@ headers: $(patsubst %, $(BUILD)/include/%, $(HEADERS))
 
 $(BUILD)/include/%.h: %.h
 	cp $< $@
+
+doc:
+	mkdir -p $(BUILD)/doc
+	doxygen $(DOC_CONFIG)
 
 
 clean:
