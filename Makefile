@@ -7,7 +7,9 @@ OBJS= Color.o \
 	Timer.o \
 	Vector2.o \
 	Vector3.o \
-	Window.o
+	Window.o \
+	Camera.o \
+	Matrix4.o
 
 BUILD=build
 CXXFLAGS= -std=c++11
