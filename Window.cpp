@@ -66,8 +66,10 @@ void Window::updateSize(unsigned newWidth, unsigned newHeight) {
 
 void Window::updateGL() {
 	// Set the viewport to cover the new window size
-	// XXX: Why do I need to multiply the width and height by 2??? Retina?
-	glViewport(0, 0, width * 2, height * 2);
+	// To ensure we cover the entire window, use framebuffer size
+	int fbwidth, fbheight;
+	glfwGetFramebufferSize(glwindow, &fbwidth, &fbheight);
+	glViewport(0, 0, fbwidth, fbheight);
 	
 	// Set the aspect ratio of the clipping area to match the viewport
 	glMatrixMode(GL_PROJECTION);
