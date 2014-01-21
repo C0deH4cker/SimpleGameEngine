@@ -36,5 +36,5 @@ $(BUILD)/include/%.h: %.h
 
 
 clean:
-	rm -rf $(BUILD) $(OBJS) 
+	rm -rf $(BUILD)
 
