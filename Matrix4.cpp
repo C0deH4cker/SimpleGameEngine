@@ -12,15 +12,58 @@
 
 using namespace sge;
 
-Matrix4::Matrix4() {
+const Matrix4 Matrix4::Identity = Matrix4::identity();
 
+Matrix4::Matrix4() {
 }
+
 
 Matrix4::~Matrix4() {
 
 }
 
 float& Matrix4::operator[](uint8_t i) {
+	switch(i) {
+		case 0:
+			return m00;
+		case 1:
+			return m01;
+		case 2:
+			return m02;
+		case 3:
+			return m03;
+		case 4:
+			return m10;
+		case 5:
+			return m11;
+		case 6:
+			return m12;
+		case 7:
+			return m13;
+		case 8:
+			return m20;
+		case 9:
+			return m21;
+		case 10:
+			return m22;
+		case 11:
+			return m23;
+		case 12:
+			return m30;
+		case 13:
+			return m31;
+		case 14:
+			return m32;
+		case 15:
+			return m33;
+		default:
+			std::stringstream ss;
+			ss << "Matrix[] index out of bounds: " << (uint16_t)i;
+			throw std::runtime_error(ss.str());
+	}
+}
+
+float Matrix4::operator[](uint8_t i) const {
 	switch(i) {
 		case 0:
 			return m00;
