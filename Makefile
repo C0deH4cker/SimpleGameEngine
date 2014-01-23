@@ -12,7 +12,20 @@ OBJS= Color.o \
 	Matrix4.o
 
 BUILD=build
-CXXFLAGS= -std=c++11
+CXXFLAGS= -std=c++11 -Wall \
+	-Wextra \
+	-Wwrite-strings \
+	-Winit-self \
+	-Wcast-align \
+	-Wcast-qual \
+	-Wpointer-arith \
+	-Wstrict-aliasing \
+	-Wformat=2 \
+	-Wmissing-declarations \
+	-Wmissing-include-dirs \
+	-Wno-unused-parameter \
+	-Wuninitialized \
+	-Wdouble-promotion
 HEADERS=$(shell find . -not -path "./$(BUILD)/*" -name '*.h')
 DOC_CONFIG=doxygen_config
 
