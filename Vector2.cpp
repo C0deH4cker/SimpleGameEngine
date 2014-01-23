@@ -237,7 +237,7 @@ const Vector2 sge::operator/(const Vector2& vec, float scale) {
 }
 
 
-std::ostream& operator<<(std::ostream& stream, const Vector2& vec) {
+std::ostream& sge::operator<<(std::ostream& stream, const Vector2& vec) {
 	std::stringstream ss;
 	ss << "(" << vec.x << ", " << vec.y << ")";
 	stream << ss.str();
