@@ -164,8 +164,7 @@ void Window::hideCursor(bool hide) {
 }
 
 void Window::toggleFullscreen() {
-	fullscreen = !fullscreen;
-	if(fullscreen)
+	if(!isFullscreen())
 		enableFullscreen();
 	else
 		disableFullscreen();
@@ -180,6 +179,6 @@ void Window::disableFullscreen() {
 }
 
 bool Window::isFullscreen() {
-	return fullscreen;
+	return glfwGetWindowMonitor(glwindow) != NULL;
 }
 
