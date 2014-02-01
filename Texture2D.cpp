@@ -16,7 +16,7 @@
 using namespace sge;
 
 
-GLuint png_texture_load(const char* file_name, int* width, int* height) {
+GLuint png_texture_load(const char* file_name, int* width, int* height, GLenum filter) {
     png_byte header[8];
 	
     FILE* fp = fopen(file_name, "rb");
@@ -150,8 +150,8 @@ GLuint png_texture_load(const char* file_name, int* width, int* height) {
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexImage2D(GL_TEXTURE_2D, 0, format, temp_width, temp_height, 0, format, GL_UNSIGNED_BYTE, image_data);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 	
     // clean up
     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
@@ -162,8 +162,8 @@ GLuint png_texture_load(const char* file_name, int* width, int* height) {
 }
 
 
-Texture2D::Texture2D(const std::string& path) {
-	gltexture = png_texture_load(path.c_str(), &width, &height);
+Texture2D::Texture2D(const std::string& path, GLenum filter) {
+	gltexture = png_texture_load(path.c_str(), &width, &height, filter);
 }
 
 Texture2D::~Texture2D() {

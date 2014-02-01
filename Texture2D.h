@@ -19,7 +19,7 @@ namespace sge {
 	public:
 		int width, height;
 		
-		Texture2D(const std::string& path);
+		Texture2D(const std::string& path, GLenum filter=GL_LINEAR);
 		~Texture2D();
 		
 		void draw(const Rectangle& frame) const;

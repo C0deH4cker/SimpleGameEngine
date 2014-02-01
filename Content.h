@@ -24,9 +24,9 @@ namespace sge {
 		 @param filename The name of the file to load
 		 @returns A pointer to a newly created instance of the loaded resource
 		 */
-		template <typename T>
-		T* load(std::string filename) const {
-			return new T(dir + filename);
+		template <typename T, typename... Args>
+		T* load(std::string filename, Args... args) const {
+			return new T(dir + filename, args...);
 		}
 		
 	private:
