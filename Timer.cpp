@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 C0deH4cker. All rights reserved.
 //
 
+
+// TODO: Make this platform independent.
+
 #include "Timer.h"
 #include <mach/mach_time.h>
 
