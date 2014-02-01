@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 C0deH4cker. All rights reserved.
 //
 
-#pragma once
+#ifndef _SGE_TEXTURE2D_H_
+#define _SGE_TEXTURE2D_H_
 
 #include <string>
 #include <OpenGL/gl.h>
@@ -28,3 +29,4 @@ namespace sge {
 	};
 }
 
+#endif /* _SGE_TEXTURE2D_H_ */

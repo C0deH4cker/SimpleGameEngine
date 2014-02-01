@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 C0deH4cker. All rights reserved.
 //
 
-#pragma once
+#ifndef _SGE_COLOR_H_
+#define _SGE_COLOR_H_
 
 
 namespace sge {
@@ -169,3 +170,4 @@ namespace sge {
 	};
 }
 
+#endif /* _SGE_COLOR_H_ */

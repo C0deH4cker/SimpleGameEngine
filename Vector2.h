@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 C0deH4cker. All rights reserved.
 //
 
-#pragma once
+#ifndef _SGE_VECTOR2_H_
+#define _SGE_VECTOR2_H_
 
 #include <ostream>
-
 
 namespace sge {
 	struct Vector2 {
@@ -22,19 +22,6 @@ namespace sge {
 		
 		// Assignment
 		Vector2& operator=(const Vector2& vec);
-		
-		// Relational operators
-		bool operator<(const Vector2& vec) const;
-		bool operator>(const Vector2& vec) const;
-		bool operator<=(const Vector2& vec) const;
-		bool operator>=(const Vector2& vec) const;
-		bool operator==(const Vector2& vec) const;
-		bool operator!=(const Vector2& vec) const;
-		
-		bool operator>=(float mag) const;
-		bool operator<(float mag) const;
-		bool operator>(float mag) const;
-		bool operator<=(float mag) const;
 		
 		// In-place arithmetic
 		Vector2& operator+=(const Vector2& vec);
@@ -54,6 +41,24 @@ namespace sge {
 		float distance(const Vector2& other) const;
 		float dot(const Vector2& other) const;
 	};
+	
+	// Relational operators
+	bool operator<(const Vector2& l, const Vector2& r);
+	bool operator>(const Vector2& l, const Vector2& r);
+	bool operator<=(const Vector2& l, const Vector2& r);
+	bool operator>=(const Vector2& l, const Vector2& r);
+	bool operator==(const Vector2& l, const Vector2& r);
+	bool operator!=(const Vector2& l, const Vector2& r);
+	
+	bool operator>=(const Vector2& l, float mag);
+	bool operator<(const Vector2& l, float mag);
+	bool operator>(const Vector2& l, float mag);
+	bool operator<=(const Vector2& l, float mag);
+	
+	bool operator>=(float mag, const Vector2& r);
+	bool operator<(float mag, const Vector2& r);
+	bool operator>(float mag, const Vector2& r);
+	bool operator<=(float mag, const Vector2& r);
 
 	// Arithmetic
 	const Vector2 operator+(const Vector2& vec, const Vector2& other);
@@ -71,3 +76,4 @@ namespace sge {
 	std::ostream& operator<<(std::ostream& stream, const Vector2& vec);
 }
 
+#endif /* _SGE_VECTOR2_H_ */

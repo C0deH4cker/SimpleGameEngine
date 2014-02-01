@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 C0deH4cker. All rights reserved.
 //
 
-#pragma once
+#ifndef _SGE_TIMER_H_
+#define _SGE_TIMER_H_
 
 #include <mach/mach_time.h>
 
@@ -28,3 +29,4 @@ namespace sge {
 	};
 }
 
+#endif /* _SGE_TIMER_H_ */

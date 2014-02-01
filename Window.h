@@ -6,11 +6,13 @@
 //  Copyright (c) 2013 C0deH4cker. All rights reserved.
 //
 
-#pragma once
+#ifndef _SGE_WINDOW_H_
+#define _SGE_WINDOW_H_
 
 #include <GLFW/glfw3.h>
 #include <string>
 #include "Color.h"
+#include "Rectangle.h"
 
 
 namespace sge {
@@ -29,6 +31,8 @@ namespace sge {
 		
 		void setPreservesAspectRatio(bool preserve);
 		bool preservesAspectRatio();
+		
+		Rectangle getBounds() const;
 		
 		unsigned getWidth();
 		unsigned getHeight();
@@ -60,6 +64,7 @@ namespace sge {
 		float planeWidth, planeHeight;
 		float aspect;
 		bool resizeable, keepRatio, fullscreen;
+		bool cursorHidden;
 		
 		void construct();
 		void updateSize(unsigned, unsigned);
@@ -69,3 +74,4 @@ namespace sge {
 	};
 }
 
+#endif /* _SGE_WINDOW_H_ */

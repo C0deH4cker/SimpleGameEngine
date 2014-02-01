@@ -8,6 +8,7 @@
 
 #include "Rectangle.h"
 #include "helpers.h"
+#include <math.h>
 
 using namespace sge;
 
@@ -29,5 +30,71 @@ bool Rectangle::intersects(const Rectangle& other) const {
 			 other.x + other.width < x ||
 			 other.y > y + height ||
 			 other.y + other.height < y);
+}
+
+float Rectangle::left() const {
+	return x;
+}
+
+float Rectangle::midX() const {
+	return x + width / 2.0f;
+}
+
+float Rectangle::right() const {
+	return x + width;
+}
+
+float Rectangle::top() const {
+	return y;
+}
+
+float Rectangle::midY() const {
+	return y + height / 2.0f;
+}
+
+float Rectangle::bottom() const {
+	return y + height;
+}
+
+
+float Rectangle::diagonal() const {
+	return sqrt(width*width + height*height);
+}
+
+
+Vector2 Rectangle::topLeft() const {
+	return Vector2(x, y);
+}
+
+Vector2 Rectangle::topCenter() const {
+	return Vector2(x + width / 2.0f, y);
+}
+
+Vector2 Rectangle::topRight() const {
+	return Vector2(x + width, y);
+}
+
+Vector2 Rectangle::leftCenter() const {
+	return Vector2(x, y + width / 2.0f);
+}
+
+Vector2 Rectangle::center() const {
+	return Vector2(x + width / 2.0f, y + height / 2.0f);
+}
+
+Vector2 Rectangle::rightCenter() const {
+	return Vector2(x + width, y + width / 2.0f);
+}
+
+Vector2 Rectangle::bottomLeft() const {
+	return Vector2(x, y + height);
+}
+
+Vector2 Rectangle::bottomCenter() const {
+	return Vector2(x + width / 2.0f, y + height);
+}
+
+Vector2 Rectangle::bottomRight() const {
+	return Vector2(x + width, y + height);
 }
 

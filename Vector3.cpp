@@ -14,6 +14,8 @@
 using namespace sge;
 
 
+#pragma mark Constructors and Destructors -
+
 Vector3::Vector3()
 : Vector3(0.0f, 0.0f, 0.0f) {}
 
@@ -25,6 +27,7 @@ Vector3::Vector3(float value)
 
 Vector3::~Vector3() {}
 
+#pragma mark - Assignment -
 
 Vector3& Vector3::operator=(const Vector3& other) {
 	x = other.x;
@@ -32,49 +35,6 @@ Vector3& Vector3::operator=(const Vector3& other) {
 	z = other.z;
 	return *this;
 }
-
-
-bool Vector3::operator<(const Vector3& other) const {
-	return magnitude() < other.magnitude();
-}
-
-bool Vector3::operator>(const Vector3& other) const {
-	return magnitude() > other.magnitude();
-}
-
-bool Vector3::operator<=(const Vector3& other) const {
-	return magnitude() <= other.magnitude();
-}
-
-bool Vector3::operator>=(const Vector3& other) const {
-	return magnitude() >= other.magnitude();
-}
-
-bool Vector3::operator==(const Vector3& other) const {
-	return x == other.x && y == other.y && z == other.z;
-}
-
-bool Vector3::operator!=(const Vector3& other) const {
-	return x != other.x || y != other.y || z != other.z;
-}
-
-
-bool Vector3::operator<(float mag) const {
-	return magnitude() < mag;
-}
-
-bool Vector3::operator>(float mag) const {
-	return magnitude() > mag;
-}
-
-bool Vector3::operator<=(float mag) const {
-	return magnitude() <= mag;
-}
-
-bool Vector3::operator>=(float mag) const {
-	return magnitude() >= mag;
-}
-
 
 Vector3& Vector3::operator+=(const Vector3& other) {
 	x += other.x;
@@ -118,6 +78,7 @@ Vector3& Vector3::operator/=(float scale) {
 	return *this;
 }
 
+#pragma mark - Methods -
 
 float Vector3::sqrmagnitude() const {
 	return x*x + y*y + z*z;
@@ -170,6 +131,67 @@ float Vector3::dot(const Vector3& other) const {
 	return x * other.x + y * other.y + z * other.z;
 }
 
+#pragma mark - Comparison Operators -
+
+bool sge::operator<(const Vector3& l, const Vector3& r) {
+	return l.magnitude() < r.magnitude();
+}
+
+bool sge::operator>(const Vector3& l, const Vector3& r) {
+	return l.magnitude() > r.magnitude();
+}
+
+bool sge::operator<=(const Vector3& l, const Vector3& r) {
+	return l.magnitude() <= r.magnitude();
+}
+
+bool sge::operator>=(const Vector3& l, const Vector3& r) {
+	return l.magnitude() >= r.magnitude();
+}
+
+bool sge::operator==(const Vector3& l, const Vector3& r) {
+	return l.x == r.x && l.y == r.y && l.z == r.z;
+}
+
+bool sge::operator!=(const Vector3& l, const Vector3& r) {
+	return l.x != r.x || l.y != r.y || l.z != r.z;
+}
+
+// Left side
+bool sge::operator<(const Vector3& l, float mag) {
+	return l.magnitude() < mag;
+}
+
+bool sge::operator>(const Vector3& l, float mag) {
+	return l.magnitude() > mag;
+}
+
+bool sge::operator<=(const Vector3& l, float mag) {
+	return l.magnitude() <= mag;
+}
+
+bool sge::operator>=(const Vector3& l, float mag) {
+	return l.magnitude() >= mag;
+}
+
+// Right side
+bool sge::operator<(float mag, const Vector3& r) {
+	return mag < r.magnitude();
+}
+
+bool sge::operator>(float mag, const Vector3& r) {
+	return mag > r.magnitude();
+}
+
+bool sge::operator<=(float mag, const Vector3& r) {
+	return mag <= r.magnitude();
+}
+
+bool sge::operator>=(float mag, const Vector3& r) {
+	return mag >= r.magnitude();
+}
+
+#pragma mark - Arithmetic -
 
 const Vector3 sge::operator+(const Vector3& vec, const Vector3& other) {
 	Vector3 ret;
@@ -251,6 +273,7 @@ const Vector3 sge::operator/(const Vector3& vec, float scale) {
 	return ret;
 }
 
+#pragma mark - Stream Insertion -
 
 std::ostream& sge::operator<<(std::ostream& stream, const Vector3& vec) {
 	std::stringstream ss;

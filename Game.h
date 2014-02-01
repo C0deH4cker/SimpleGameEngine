@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 C0deH4cker. All rights reserved.
 //
 
-#pragma once
+#ifndef _SGE_GAME_H_
+#define _SGE_GAME_H_
 
 #include <GLFW/glfw3.h>
 #include "Window.h"
@@ -19,10 +20,9 @@ namespace sge {
 	class Game {
 	public:
 		Window* window;
-		Content* content;
 		Vector2 mouse;
 		
-		static Game& instance();
+		static Game* instance();
 		
 		int run();
 		void terminate(int status);
@@ -78,3 +78,4 @@ namespace sge {
 	};
 }
 
+#endif /* _SGE_GAME_H_ */

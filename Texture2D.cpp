@@ -184,7 +184,8 @@ static const GLfloat texCoords[8] = {
 };
 
 void Texture2D::draw(const Rectangle& frame) const {
-	Vector2 vertices[4] = {{frame.x, frame.y}, {frame.x + frame.width, frame.y}, {frame.x + frame.width, frame.y + frame.height}, {frame.x, frame.y + frame.height}};
+	Vector2 vertices[4] = {frame.topLeft(), frame.topRight(),
+	                       frame.bottomRight(), frame.bottomLeft()};
 	
 	// Enable features
 	glEnable(GL_TEXTURE_2D);

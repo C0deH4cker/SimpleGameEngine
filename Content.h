@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 C0deH4cker. All rights reserved.
 //
 
-#pragma once
+#ifndef _SGE_CONTENT_H_
+#define _SGE_CONTENT_H_
 
 #include <string>
 
@@ -24,7 +25,7 @@ namespace sge {
 		 @returns A pointer to a newly created instance of the loaded resource
 		 */
 		template <typename T>
-		T* load(std::string filename) {
+		T* load(std::string filename) const {
 			return new T(dir + filename);
 		}
 		
@@ -32,3 +33,5 @@ namespace sge {
 		std::string dir;
 	};
 }
+
+#endif /* _SGE_CONTENT_H_ */

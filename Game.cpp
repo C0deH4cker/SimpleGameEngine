@@ -43,7 +43,7 @@ namespace sge {
  during window construction.
  */
 Game::Game()
-: shutdown(false), inRunLoop(false)
+: shutdown(false), inRunLoop(false), status(0)
 {
 	if(game) {
 		std::cerr << "Error: There may only be one instance of Game at a time." << std::endl;
@@ -65,8 +65,8 @@ Game::~Game() {
 #pragma mark Static methods
 #pragma mark -
 
-Game& Game::instance() {
-	return *game;
+Game* Game::instance() {
+	return game;
 }
 
 
@@ -143,45 +143,45 @@ void sge::_cb_error(int error, const char* description) {
 }
 
 void sge::_cb_windowpos(GLFWwindow* w, int x, int y) {
-	Game& g = Game::instance();
+	Game& g = *Game::instance();
 	g.window->didMove(x, y);
 	g.windowMoved(x, y);
 }
 
 void sge::_cb_windowsize(GLFWwindow* w, int width, int height) {
-	Game& g = Game::instance();
+	Game& g = *Game::instance();
 	g.window->didResize(width, height);
 	g.windowResized(width, height);
 }
 
 void sge::_cb_windowclose(GLFWwindow* w) {
-	Game::instance().windowClosed();
+	Game::instance()->windowClosed();
 }
 
 void sge::_cb_windowrefresh(GLFWwindow* w) {
-	Game::instance().display();
+	Game::instance()->display();
 }
 
 void sge::_cb_windowfocus(GLFWwindow* w, int dir) {
-	Game::instance().windowFocused(dir);
+	Game::instance()->windowFocused(dir);
 }
 
 void sge::_cb_windowiconify(GLFWwindow* w, int dir) {
-	Game::instance().windowMinimized(dir);
+	Game::instance()->windowMinimized(dir);
 }
 
 void sge::_cb_framebuffersize(GLFWwindow* w, int width, int height) {
-	Game::instance().framebufferResized(width, height);
+	Game::instance()->framebufferResized(width, height);
 }
 
 void sge::_cb_mousebutton(GLFWwindow* w, int button, int action, int mods) {
 	switch(action) {
 		case GLFW_PRESS:
-			Game::instance().mouseDown(button, mods);
+			Game::instance()->mouseDown(button, mods);
 			break;
 		
 		case GLFW_RELEASE:
-			Game::instance().mouseUp(button, mods);
+			Game::instance()->mouseUp(button, mods);
 			break;
 		
 		default:
@@ -190,31 +190,31 @@ void sge::_cb_mousebutton(GLFWwindow* w, int button, int action, int mods) {
 }
 
 void sge::_cb_cursorpos(GLFWwindow* w, double x, double y) {
-	Game& g = Game::instance();
+	Game& g = *Game::instance();
 	g.mouse = {x, y};
 	g.mouseMoved({x, y});
 }
 
 void sge::_cb_cursorenter(GLFWwindow* w, int dir) {
-	Game::instance().mouseEntered(dir);
+	Game::instance()->mouseEntered(dir);
 }
 
 void sge::_cb_scroll(GLFWwindow* w, double x, double y) {
-	Game::instance().scrolled({x, y});
+	Game::instance()->scrolled({x, y});
 }
 
 void sge::_cb_key(GLFWwindow* w, int key, int scancode, int action, int mods) {
 	switch(action) {
 		case GLFW_PRESS:
-			Game::instance().keyDown(key, scancode, mods);
+			Game::instance()->keyDown(key, scancode, mods);
 			break;
 		
 		case GLFW_RELEASE:
-			Game::instance().keyUp(key, scancode, mods);
+			Game::instance()->keyUp(key, scancode, mods);
 			break;
 		
 		case GLFW_REPEAT:
-			Game::instance().keyRepeat(key, scancode, mods);
+			Game::instance()->keyRepeat(key, scancode, mods);
 			break;
 		
 		default:
@@ -223,7 +223,7 @@ void sge::_cb_key(GLFWwindow* w, int key, int scancode, int action, int mods) {
 }
 
 void sge::_cb_char(GLFWwindow* w, unsigned c) {
-	Game::instance().charTyped(c);
+	Game::instance()->charTyped(c);
 }
 
 #pragma mark -
