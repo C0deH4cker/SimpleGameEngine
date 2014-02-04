@@ -162,12 +162,12 @@ float Vector2::dot(const Vector2& other) const {
 	return x * other.x + y * other.y;
 }
 
-Vector2 Vector2::transform(const sge::Matrix &mat) const {
+Vector2 Vector2::transform(const sge::Matrix4 &mat) const {
 	return Vector2(x * mat.m11 + y * mat.m21 + mat.m41,
 	               x * mat.m12 + y * mat.m22 + mat.m42);
 }
 
-Vector2& Vector2::itransform(const sge::Matrix &mat) {
+Vector2& Vector2::itransform(const sge::Matrix4 &mat) {
 	float tmp = x * mat.m11 + y * mat.m21 + mat.m41;
 	y = x * mat.m12 + y * mat.m22 + mat.m42;
 	x = tmp;
