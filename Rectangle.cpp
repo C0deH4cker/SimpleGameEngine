@@ -16,7 +16,8 @@ Rectangle::Rectangle(float x, float y, float width, float height)
 : x(x), y(y), width(width), height(height) {}
 
 Rectangle::Rectangle(const Vector2& p1, const Vector2& p2)
-: x(MIN(p1.x, p2.x)), y(MIN(p1.y, p2.y)), width(ABS(p2.x - p1.x)), height(ABS(p2.y - p1.y)) {}
+: x(MIN(p1.x, p2.x)), y(MIN(p1.y, p2.y)),
+width(ABS(p2.x - p1.x)), height(ABS(p2.y - p1.y)) {}
 
 
 Rectangle& Rectangle::operator=(const sge::Rectangle& other) {

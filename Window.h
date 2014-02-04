@@ -19,15 +19,17 @@ namespace sge {
 	/*! Handles window and viewport settings. */
 	class Window {
 	public:
-		/*! Constructs a window with the given parameters but doesn't display it.
+		/*! Constructs a window with the given parameters.
 		 @param title The window's title.
 		 @param x X coordinate where the window should be opened.
 		 @param y Y coordinate where the window should be opened.
 		 @param width Width of the window.
 		 @param height Height of the window.
-		 @param resizeable Whether or not the window should be resizeable by the user.
+		 @param resizeable Whether the window should be resizeable by the user.
+		 @note The window is not displayed until 
 		 */
-		Window(std::string title="Untitled Game", int x=50, int y=50, unsigned width=640, unsigned height=480, bool resizeable=false);
+		Window(std::string title="Untitled Game", int x=50, int y=50,
+		       unsigned width=640, unsigned height=480, bool resizeable=false);
 		
 		~Window();
 		
@@ -43,7 +45,7 @@ namespace sge {
 		void render();
 		
 		/*! Get the window's title.
-		 @returns The window's title.
+		 @return The window's title.
 		 */
 		const std::string& getTitle();
 		
@@ -52,28 +54,29 @@ namespace sge {
 		 */
 		void setTitle(std::string title);
 		
-		/*! Specify whether the window's aspect ratio should be preserved when resizing.
+		/*! Specify whether the window's aspect ratio should be
+		 preserved when resizing.
 		 @param preserve Whether the aspect ratio should be preserved.
 		 */
 		void setPreservesAspectRatio(bool preserve);
 		
 		/*! Check if the window's aspect ratio should be preserved.
-		 @returns Whether the aspect ratio is being preserved.
+		 @return Whether the aspect ratio is being preserved.
 		 */
 		bool preservesAspectRatio();
 		
-		/*! Get the bounds of the window (usually to display a background image).
-		 @returns A rectangle of the form (0.0f, 0.0f, width, height).
+		/*! Get the bounds of the window (useful to display a background image).
+		 @return A rectangle of the form (0.0f, 0.0f, width, height).
 		 */
 		Rectangle getBounds() const;
 		
 		/*! Get the window's width.
-		 @returns The window's width.
+		 @return The window's width.
 		 */
 		unsigned getWidth();
 		
 		/*! Get the window's height.
-		 @returns The window's height.
+		 @return The window's height.
 		 */
 		unsigned getHeight();
 		
@@ -84,12 +87,12 @@ namespace sge {
 		void setSize(unsigned width, unsigned height);
 		
 		/*! Gets the window's x coordinate.
-		 @returns The window's x coordinate.
+		 @return The window's x coordinate.
 		 */
 		int getX();
 		
 		/*! Gets the window's y coordinate.
-		 @returns The window's y coordinate.
+		 @return The window's y coordinate.
 		 */
 		int getY();
 		
@@ -105,7 +108,7 @@ namespace sge {
 		void hideCursor(bool hide);
 		
 		/*! Check if the window is fullscreen or windowed.
-		 @returns Whether the window is fullscreen.
+		 @return Whether the window is fullscreen.
 		 */
 		bool isFullscreen();
 		

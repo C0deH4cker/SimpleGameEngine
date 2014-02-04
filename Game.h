@@ -26,19 +26,23 @@ namespace sge {
 		/*! Object representing the current window. */
 		Window* window;
 		
-		/*! Vector containing the most recent coordinates of the mouse cursor. */
+		/*! Vector containing the most recent position of the mouse cursor. */
 		Vector2 mouse;
 		
 		
-		/*! Constructs the base game object. Child constructors must call this. */
+		/*! Constructs the base game object.
+		 @note Subclasses must call this constructor.
+		 */
 		Game();
 		
-		/*! Destructor for the game object. Should be overridden to free resources. */
+		/*! Destructor for the game object.
+		 @note Should be overridden to free resources.
+		 */
 		virtual ~Game();
 		
 #pragma mark - Base Class Methods -
 		/*! Method to be called from `main` to run the game.
-		 @returns Exit status code.
+		 @return Exit status code.
 		 */
 		int run();
 		
@@ -50,27 +54,27 @@ namespace sge {
 #pragma mark - Required Virtual Methods -
 		/*!
 		 This method is called only once. At this point, the window has already
-		 been constructed, and it is safe to perform drawing. This is where content
-		 should be loaded and variables should be initialized if they weren't
-		 initialized by the constructor.
+		 been constructed, and it is safe to perform drawing. This is where
+		 content should be loaded and variables should be initialized if they
+		 weren't initialized by the constructor.
 		 @note This method must be implemented by a subclass.
 		 */
 		virtual void initialize()=0;
 		
 		/*!
 		 This method is called once per frame during the game's run loop. All
-		 game logic such as movement and collision detection should be done here.
+		 game logic such as movement and collision detection should go here.
 		 @note This method must be implemented by a subclass.
-		 @param deltaTime Elapsed time in seconds since the last time update was called.
+		 @param deltaTime Elapsed time in seconds since update was called last.
 		 */
 		virtual void update(double deltaTime)=0;
 		
 		/*!
-		 This method is called at least once per frame (it may also be called when the
-		 window needs to be redrawn for some reason). This is where all drawing should
-		 be done (including sprite animation).
+		 This method is called at least once per frame (it may also be called
+		 when the window needs to be redrawn for some reason). This is where
+		 all drawing should be done (including sprite animation).
 		 @note This method must be implemented by a subclass.
-		 @param deltaTime Elapsed time in seconds since the last time draw was called.
+		 @param deltaTime Elapsed time in seconds since draw was called last.
 		 */
 		virtual void draw(double deltaTime) = 0;
 		
@@ -90,14 +94,14 @@ namespace sge {
 		 */
 		virtual void windowResized(int width, int height) {};
 		
-		/*! Called when the window is closed. The game will automatically exit after this,
-		 so shutdown logic can go here before the destructor runs.
+		/*! Called when the window is closed. The game will automatically exit
+		 after this, so shutdown logic can go here before the destructor runs.
 		 @note This method is optional to implement.
 		 */
 		virtual void windowClosed() {};
 		
-		/*! Called when the window gains focus (it is clicked on and comes into the
-		 foreground) or loses focus (another window gains focus).
+		/*! Called when the window gains focus (it is clicked on and comes
+		 into the foreground) or loses focus (another window gains focus).
 		 @note This method is optional to implement.
 		 @param focused Whether the window gained or lost focus.
 		 */
@@ -152,7 +156,8 @@ namespace sge {
 		 action if not overridden is to terminate the game when ESC is pressed.
 		 @note This method is optional to implement.
 		 @param key The key that was pressed.
-		 @param scancode Hardware specific scancode (used to identify nonstandard keys for custom keymappings).
+		 @param scancode Hardware specific scancode (used to identify
+		        nonstandard keys for custom keymappings).
 		 @param mods Keyboard modifiers currently pressed.
 		 */
 		virtual void keyDown(int key, int scancode, int mods) {
@@ -163,15 +168,17 @@ namespace sge {
 		/*! Called when a key is released (including special keys).
 		 @note This method is optional to implement.
 		 @param key The key that was pressed.
-		 @param scancode Hardware specific scancode (used to identify nonstandard keys for custom keymappings).
+		 @param scancode Hardware specific scancode (used to identify
+		        nonstandard keys for custom keymappings).
 		 @param mods Keyboard modifiers currently pressed.
 		 */
 		virtual void keyUp(int key, int scancode, int mods) {};
 		
-		/*! Called when a key repeats based on system settings (including special keys).
+		/*! Called when a key or special key repeats based on system settings.
 		 @note This method is optional to implement.
 		 @param key The key that was pressed.
-		 @param scancode Hardware specific scancode (used to identify nonstandard keys for custom keymappings).
+		 @param scancode Hardware specific scancode (used to identify
+		        nonstandard keys for custom keymappings).
 		 @param mods Keyboard modifiers currently pressed.
 		 */
 		virtual void keyRepeat(int key, int scancode, int mods) {};

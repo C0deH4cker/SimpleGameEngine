@@ -26,7 +26,7 @@ namespace sge {
 		 */
 		Rectangle(float x=0, float y=0, float width=0, float height=0);
 		
-		/*! Constructs a rectangle formed with the given points as opposing corners.
+		/*! Constructs a rectangle given points of opposite corners.
 		 @param p1 A corner of the rectangle.
 		 @param p2 A corner of the rectangle.
 		 */

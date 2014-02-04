@@ -39,14 +39,15 @@ namespace sge {
  The constructor shall guarantee that only one instance may ever be initialized,
  as this is a singleton. Additionally, we should initialize the Window class but
  not have it create the GLFWwindow yet. That must wait until after the user has
- performed custom window initialization as many of the custom options must happen
- during window construction.
+ performed custom window initialization as many of the custom options must
+ occur during window construction.
  */
 Game::Game()
 : shutdown(false), inRunLoop(false), status(0)
 {
 	if(game) {
-		std::cerr << "Error: There may only be one instance of Game at a time." << std::endl;
+		std::cerr << "Error: There may only be one instance of Game at a time."
+		          << std::endl;
 		exit(1);
 	}
 	

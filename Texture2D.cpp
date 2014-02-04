@@ -9,8 +9,10 @@
 #include "Texture2D.h"
 #include <string>
 #include <OpenGL/gl.h>
+#include <math.h>
 #include <png.h>
 #include "Rectangle.h"
+#include "Matrix.h"
 #include "Vector2.h"
 
 using namespace sge;
@@ -18,7 +20,8 @@ using namespace sge;
 
 GLuint Texture2D::active = 0;
 
-GLuint Texture2D::loadPNG(const char* filename, int* width, int* height, GLenum filter) {
+GLuint Texture2D::loadPNG(const char* filename, int* width,
+                          int* height, GLenum filter) {
     png_byte header[8];
 	
     FILE* fp = fopen(filename, "rb");
@@ -36,7 +39,8 @@ GLuint Texture2D::loadPNG(const char* filename, int* width, int* height, GLenum 
         return 0;
     }
 	
-    png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,
+	                                             NULL, NULL, NULL);
     if(!png_ptr) {
         fprintf(stderr, "Error: png_create_read_struct returned 0.\n");
         fclose(fp);
@@ -83,14 +87,15 @@ GLuint Texture2D::loadPNG(const char* filename, int* width, int* height, GLenum 
     png_uint_32 temp_width, temp_height;
 	
     // Get info about png
-    png_get_IHDR(png_ptr, info_ptr, &temp_width, &temp_height, &bit_depth, &color_type,
-				 NULL, NULL, NULL);
+    png_get_IHDR(png_ptr, info_ptr, &temp_width, &temp_height,
+	             &bit_depth, &color_type, NULL, NULL, NULL);
 	
     if(width) *width = temp_width;
     if(height) *height = temp_height;
 	
     if(bit_depth != 8) {
-        fprintf(stderr, "%s: Unsupported bit depth %d. Must be 8.\n", filename, bit_depth);
+        fprintf(stderr, "%s: Unsupported bit depth %d. Must be 8.\n",
+		        filename, bit_depth);
         return 0;
     }
 	
@@ -105,7 +110,8 @@ GLuint Texture2D::loadPNG(const char* filename, int* width, int* height, GLenum 
 			break;
 		
 		default:
-			fprintf(stderr, "%s: Unknown libpng color type %d.\n", filename, color_type);
+			fprintf(stderr, "%s: Unknown libpng color type %d.\n",
+			        filename, color_type);
 			return 0;
     }
 	
@@ -119,25 +125,29 @@ GLuint Texture2D::loadPNG(const char* filename, int* width, int* height, GLenum 
     rowbytes += 3 - ((rowbytes-1) % 4);
 	
     // Allocate the image_data as a big block, to be given to opengl
-    png_byte* image_data = (png_byte*)malloc(rowbytes * temp_height * sizeof(png_byte) + 15);
+    png_byte* image_data = (png_byte*)malloc(rowbytes * temp_height *
+	                                         sizeof(*image_data) + 15);
     if(image_data == NULL) {
-        fprintf(stderr, "Error: Could not allocate memory for PNG image data\n");
+        fprintf(stderr,
+		        "Error: Could not allocate memory for PNG image data\n");
         png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
         fclose(fp);
         return 0;
     }
 	
-    // row_pointers is for pointing to image_data for reading the png with libpng
-    png_byte** row_pointers = (png_byte**)malloc(temp_height * sizeof(png_byte* ));
+    // row_pointers points to image_data for reading the png with libpng
+    png_byte** row_pointers = (png_byte**)malloc(temp_height *
+	                                             sizeof(*row_pointers));
     if(row_pointers == NULL) {
-        fprintf(stderr, "Error: Could not allocate memory for PNG row pointers\n");
+        fprintf(stderr,
+		        "Error: Could not allocate memory for PNG row pointers\n");
         png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
         free(image_data);
         fclose(fp);
         return 0;
     }
 	
-    // Set the individual row_pointers to point at the correct offsets of image_data
+    // Set each row_pointer to point at the correct offsets of image_data
     for(unsigned int i = 0; i < temp_height; i++) {
         row_pointers[temp_height - 1 - i] = image_data + i * rowbytes;
     }
@@ -149,15 +159,17 @@ GLuint Texture2D::loadPNG(const char* filename, int* width, int* height, GLenum 
     GLuint texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, active = texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, format, temp_width, temp_height, 0, format, GL_UNSIGNED_BYTE, image_data);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, temp_width, temp_height,
+	             0, format, GL_UNSIGNED_BYTE, image_data);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 	
-    // clean up
+    // Clean up
     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
     free(image_data);
     free(row_pointers);
     fclose(fp);
+	
     return texture;
 }
 
@@ -183,9 +195,17 @@ static const GLfloat texCoords[8] = {
 	0.0f, 0.0f
 };
 
-void Texture2D::draw(const Rectangle& frame) const {
-	Vector2 vertices[4] = {frame.topLeft(), frame.topRight(),
-	                       frame.bottomRight(), frame.bottomLeft()};
+void Texture2D::draw(const Rectangle& frame, float rotation) const {
+	Vector2 v[4] = {frame.topLeft(), frame.topRight(),
+	                frame.bottomRight(), frame.bottomLeft()};
+	
+	Vector2 center(frame.center());
+	
+	for(int i = 0; i < 4; i++) {
+		v[i] -= center;
+		v[i].irotate(rotation);
+		v[i] += center;
+	}
 	
 	// Enable features
 	glEnable(GL_TEXTURE_2D);
@@ -201,7 +221,7 @@ void Texture2D::draw(const Rectangle& frame) const {
 		glBindTexture(GL_TEXTURE_2D, active = gltexture);
 	
 	// Set vertices
-	glVertexPointer(2, GL_FLOAT, 0, vertices);
+	glVertexPointer(2, GL_FLOAT, 0, v);
 	glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
 	
 	// Draw image
@@ -214,7 +234,8 @@ void Texture2D::draw(const Rectangle& frame) const {
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
-void Texture2D::draw(const sge::Rectangle &frame, const sge::Rectangle &sprite) const {
+void Texture2D::draw(const sge::Rectangle &frame,
+					 const sge::Rectangle &sprite, float rotation) const {
 	// TODO: implement this
 }
 

@@ -18,8 +18,10 @@ namespace sge {
 		/*! The components of the vector. */
 		float x, y, z;
 		
-		/*! Constructs a zero vector. */
-		Vector3();
+		/*! Constructs a vector with both components set to `scalar`.
+		 @param scalar The value each component is initialized to.
+		 */
+		Vector3(float scalar=0.0f);
 		
 		/*! Constructs a vector with the given components.
 		 @param x The x coordinate of the vector.
@@ -28,10 +30,10 @@ namespace sge {
 		 */
 		Vector3(float x, float y, float z);
 		
-		/*! Constructs a vector with both components set to `value`.
-		 @param value The value each component is initialized to.
+		/*! Copying constructor.
+		 @param other Vector to copy.
 		 */
-		Vector3(float value);
+		Vector3(const Vector3& other);
 		
 		~Vector3();
 		
@@ -46,7 +48,11 @@ namespace sge {
 		Vector3& operator*=(float scale);
 		Vector3& operator/=(float scale);
 		
-		/*! Calculates the vector's magnitude, squared. Faster than `magnitude`. */
+		// Negation
+		Vector3 operator-() const;
+		
+		/*! Calculates the vector's magnitude, squared.
+		 @note Faster than `magnitude`. */
 		float sqrmagnitude() const;
 		
 		/*! Calculates the vector's magnitude. */
@@ -60,7 +66,7 @@ namespace sge {
 		
 		/*!
 		 Calculates the distance between the vectors, squared.
-		 Faster than `distance`.
+		 @note Faster than `distance`.
 		 */
 		float sqrdistance(const Vector3& other) const;
 		
@@ -72,7 +78,19 @@ namespace sge {
 		
 		/*! Calculates the cross product of the vectors. */
 		Vector3 cross(const Vector3& other) const;
-	};
+		
+		/*! Transforms the vector using a transformation matrix.
+		 @param mat Transformation matrix to apply to the vector.
+		 @return Newly transformed vector.
+		 */
+		Vector3 transform(const Matrix& mat) const;
+		
+		/*! Transforms the vector in-place using a transformation matrix.
+		 @param mat Transformation matrix to apply to the vector.
+		 @return Reference to the modified vector.
+		 */
+		Vector3& itransform(const Matrix& mat);
+	} __attribute__((__packed__));
 	
 	// Relational operators
 	bool operator<(const Vector3& l, const Vector3& r);
@@ -96,7 +114,6 @@ namespace sge {
 	const Vector3 operator+(const Vector3& vec, const Vector3& other);
 	const Vector3 operator+(const Vector3& vec, float amount);
 	const Vector3 operator+(float amount, const Vector3& vec);
-	const Vector3 operator-(const Vector3& vec);
 	const Vector3 operator-(const Vector3& vec, const Vector3& other);
 	const Vector3 operator-(const Vector3& vec, float amount);
 	const Vector3 operator-(float amount, const Vector3& vec);

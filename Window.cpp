@@ -15,9 +15,11 @@
 
 using namespace sge;
 
-Window::Window(std::string title, int x, int y, unsigned width, unsigned height, bool resizeable)
+Window::Window(std::string title, int x, int y,
+			   unsigned width, unsigned height, bool resizeable)
 : title(title), x(x), y(y), width(width), height(height), keepRatio(false),
-  resizeable(resizeable), glwindow(NULL), initialized(false), cursorHidden(false) {
+resizeable(resizeable), glwindow(NULL), initialized(false),
+cursorHidden(false) {
 	
 }
 
@@ -186,7 +188,8 @@ void Window::hideCursor(bool hide) {
 	
 	if(!initialized) return;
 	
-	glfwSetInputMode(glwindow, GLFW_CURSOR, hide ? GLFW_CURSOR_HIDDEN : GLFW_CURSOR_NORMAL);
+	glfwSetInputMode(glwindow, GLFW_CURSOR,
+					 hide ? GLFW_CURSOR_HIDDEN : GLFW_CURSOR_NORMAL);
 }
 
 void Window::toggleFullscreen() {

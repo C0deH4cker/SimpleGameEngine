@@ -16,14 +16,14 @@ using namespace sge;
 
 #pragma mark Constructors and Destructors -
 
-Vector3::Vector3()
-: Vector3(0.0f, 0.0f, 0.0f) {}
+Vector3::Vector3(float scalar)
+: Vector3(scalar, scalar, scalar) {}
 
 Vector3::Vector3(float x, float y, float z)
 : x(x), y(y), z(z) {}
 
-Vector3::Vector3(float value)
-: Vector3(value, value, value) {}
+Vector3::Vector3(const Vector3& other)
+: x(other.x), y(other.y), z(other.z) {}
 
 Vector3::~Vector3() {}
 
@@ -76,6 +76,10 @@ Vector3& Vector3::operator/=(float scale) {
 	y /= scale;
 	z /= scale;
 	return *this;
+}
+
+Vector3 Vector3::operator-() const {
+	return Vector3(-x, -y, -z);
 }
 
 #pragma mark - Methods -
@@ -136,6 +140,22 @@ Vector3 Vector3::cross(const Vector3& other) const {
 				   z*other.x - x*other.z,
 				   x*other.y - y*other.x);
 }
+
+Vector3 Vector3::transform(const Matrix& mat) const {
+	return Vector3(x * mat.m11 + y * mat.m21 + z * mat.m31 + mat.m41,
+	               x * mat.m12 + y * mat.m22 + z * mat.m32 + mat.m42,
+	               x * mat.m13 + y * mat.m23 + z * mat.m33 + mat.m43);
+}
+
+Vector3& Vector3::itransform(const sge::Matrix &mat) {
+	float nx = x * mat.m11 + y * mat.m21 + z * mat.m31 + mat.m41;
+	float ny = x * mat.m12 + y * mat.m22 + z * mat.m32 + mat.m42;
+	z = x * mat.m13 + y * mat.m23 + z * mat.m33 + mat.m43;
+	x = nx;
+	y = ny;
+	return *this;
+}
+
 
 #pragma mark - Comparison Operators -
 
@@ -220,14 +240,6 @@ const Vector3 sge::operator+(float amount, const Vector3& vec) {
 	ret.x = vec.x + amount;
 	ret.y = vec.y + amount;
 	ret.z = vec.z + amount;
-	return ret;
-}
-
-const Vector3 sge::operator-(const Vector3& vec) {
-	Vector3 ret;
-	ret.x = -vec.x;
-	ret.y = -vec.y;
-	ret.z = -vec.z;
 	return ret;
 }
 

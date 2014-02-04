@@ -24,8 +24,8 @@ namespace sge {
 		/*! Loads an asset of type T from the resources directory.
 		 @param T The type of resource contained in the file.
 		 @param filename The name of the file to load.
-		 @param args Additional arguments to be passed to the resource's constructor.
-		 @returns A pointer to a newly created instance of the loaded resource.
+		 @param args Additional arguments passed to the resource's constructor.
+		 @return A pointer to a newly created instance of the loaded resource.
 		 */
 		template <typename T, typename... Args>
 		T* load(std::string filename, Args... args) const {

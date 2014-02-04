@@ -18,7 +18,8 @@ namespace sge {
 	/*! Handles loading and displaying of textures. */
 	class Texture2D {
 	public:
-		/*! Currently active GL texture. If `glBind` is used manually, this must be updated. */
+		/*! Currently active GL texture.
+		 @note If `glBind` is used manually, this must be updated. */
 		static GLuint active;
 		
 		/*! Dimensions of the texture. Set when loading from file. */
@@ -28,16 +29,18 @@ namespace sge {
 		
 		/*! Loads a texture from a PNG file into a GL texture.
 		 @param filename Path to the PNG file to load.
-		 @param width Pointer whose value will be set to the PNG's width, or NULL.
-		 @param height Pointer whose value will be set to the PNG's height, or NULL.
-		 @param filter GL minification/magnification filter for the texture. Defaults to GL_LINEAR.
-		 @returns GL texture id for the loaded texture, or 0 on failure.
+		 @param width Pointer whose value will be set to the PNG's width.
+		 @param height Pointer whose value will be set to the PNG's height.
+		 @param filter GL minification/magnification filter for the texture.
+		 @note `width` and `height` may be NULL.
+		 @return GL texture id for the loaded texture, or 0 on failure.
 		 */
-		static GLuint loadPNG(const char* filename, int* width, int* height, GLenum filter);
+		static GLuint loadPNG(const char* filename, int* width,
+							  int* height, GLenum filter);
 		
 		/*!Constructs a Texture2D from the texture found in `path`.
-		 @param path Path to the texture to be loaded (currently only PNG supported).
-		 @param filter GL minification/magnification filter for the texture. Defaults to GL_LINEAR.
+		 @param path Path to the texture to load (currently only PNG supported).
+		 @param filter GL minification/magnification filter for the texture.
 		 */
 		Texture2D(const std::string& path, GLenum filter=GL_LINEAR);
 		~Texture2D();
@@ -45,13 +48,14 @@ namespace sge {
 		/*! Draws the entire texture to the screen.
 		 @param frame Frame in which to draw the texture.
 		 */
-		void draw(const Rectangle& frame) const;
+		void draw(const Rectangle& frame, float rotation=0.0f) const;
 		
 		/*! Draws a portion of the texture to the screen.
 		 @param frame Frame in which to draw the partial texture.
 		 @param sprite Region of the texture to draw.
 		 */
-		void draw(const Rectangle& frame, const Rectangle& sprite) const;
+		void draw(const Rectangle& frame, const Rectangle& sprite,
+				  float rotation=0.0f) const;
 		
 		/*! Returns whether the texture is currently active. */
 		bool isActive() const;
