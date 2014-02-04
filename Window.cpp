@@ -15,13 +15,17 @@
 
 using namespace sge;
 
-Window::Window(std::string title, int x, int y, unsigned width, unsigned height, bool resizeable)
-: title(title), x(x), y(y), width(width), height(height),
-  resizeable(resizeable), glwindow(NULL), initialized(false) {
+Window::Window(std::string title, int x, int y,
+			   unsigned width, unsigned height, bool resizeable)
+: title(title), x(x), y(y), width(width), height(height), keepRatio(false),
+resizeable(resizeable), glwindow(NULL), initialized(false),
+cursorHidden(false) {
 	
 }
 
 Window::~Window() {
+	if(!initialized) return;
+	
 	glfwDestroyWindow(glwindow);
 }
 
@@ -30,16 +34,19 @@ Window::~Window() {
 #pragma mark -
 
 void Window::construct() {
+	if(initialized) return;
+	
+	initialized = true;
+	
 	glfwWindowHint(GLFW_RESIZABLE, resizeable);
 	glwindow = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 	glfwMakeContextCurrent(glwindow);
+	hideCursor(cursorHidden);
 	
 	setPosition(x, y);
 	updateGL();
 	
 	glClearColor(color.r, color.g, color.b, color.a);
-	
-	initialized = true;
 }
 
 void Window::updateSize(unsigned newWidth, unsigned newHeight) {
@@ -65,6 +72,8 @@ void Window::updateSize(unsigned newWidth, unsigned newHeight) {
 }
 
 void Window::updateGL() {
+	if(!initialized) return;
+	
 	// Set the viewport to cover the new window size
 	// To ensure we cover the entire window, use framebuffer size
 	int fbwidth, fbheight;
@@ -97,15 +106,21 @@ void Window::didResize(int newWidth, int newHeight) {
 void Window::setBackground(const Color& c) {
 	color = c;
 	
-	if(initialized)
-		glClearColor(c.r, c.g, c.b, c.a);
+	if(!initialized) return;
+	
+	glClearColor(c.r, c.g, c.b, c.a);
 }
 
 void Window::clear() {
+	// Don't check for initialization here because this method is
+	// a performance critical one, and the window shouldn't be
+	// cleared if it isn't initialized already anyways.
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Window::render() {
+	// Don't check for initialization here either for the same
+	// reasons stated above.
 	glfwSwapBuffers(glwindow);
 }
 
@@ -115,8 +130,10 @@ const std::string& Window::getTitle() {
 
 void Window::setTitle(std::string title) {
 	this->title = title;
-	if(glwindow)
-		glfwSetWindowTitle(glwindow, title.c_str());
+	
+	if(!initialized) return;
+	
+	glfwSetWindowTitle(glwindow, title.c_str());
 }
 
 void Window::setPreservesAspectRatio(bool preserve) {
@@ -125,6 +142,10 @@ void Window::setPreservesAspectRatio(bool preserve) {
 
 bool Window::preservesAspectRatio() {
 	return keepRatio;
+}
+
+Rectangle Window::getBounds() const {
+	return Rectangle(0.0f, 0.0f, width, height);
 }
 
 unsigned Window::getWidth() {
@@ -140,6 +161,8 @@ void Window::setSize(unsigned newWidth, unsigned newHeight) {
 	updateSize(newWidth, newHeight);
 	
 	// Actually apply the size change
+	if(!initialized) return;
+	
 	glfwSetWindowSize(glwindow, width, height);
 	
 	updateGL();
@@ -156,11 +179,19 @@ int Window::getY() {
 void Window::setPosition(int x, int y) {
 	this->x = x;
 	this->y = y;
+	
+	if(!initialized) return;
+	
 	glfwSetWindowPos(glwindow, x, y);
 }
 
 void Window::hideCursor(bool hide) {
-	glfwSetInputMode(glwindow, GLFW_CURSOR, hide ? GLFW_CURSOR_HIDDEN : GLFW_CURSOR_NORMAL);
+	cursorHidden = hide;
+	
+	if(!initialized) return;
+	
+	glfwSetInputMode(glwindow, GLFW_CURSOR,
+					 hide ? GLFW_CURSOR_HIDDEN : GLFW_CURSOR_NORMAL);
 }
 
 void Window::toggleFullscreen() {
@@ -171,7 +202,7 @@ void Window::toggleFullscreen() {
 }
 
 void Window::enableFullscreen() {
-	// FIXME: add fullscreen support
+	// TODO: add fullscreen support
 }
 
 void Window::disableFullscreen() {

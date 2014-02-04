@@ -14,66 +14,26 @@
 using namespace sge;
 
 
-Vector2::Vector2()
-: Vector2(0.0f, 0.0f) {}
+#pragma mark Constructors and Destructors -
+
+Vector2::Vector2(float scalar)
+: x(scalar), y(scalar) {}
 
 Vector2::Vector2(float x, float y)
 : x(x), y(y) {}
 
-Vector2::Vector2(float value)
-: Vector2(value, value) {}
+Vector2::Vector2(const Vector2& other)
+: x(other.x), y(other.y) {}
 
 Vector2::~Vector2() {}
 
+#pragma mark - Assignment -
 
 Vector2& Vector2::operator=(const Vector2& other) {
 	x = other.x;
 	y = other.y;
 	return *this;
 }
-
-
-bool Vector2::operator<(const Vector2& other) const {
-	return magnitude() < other.magnitude();
-}
-
-bool Vector2::operator>(const Vector2& other) const {
-	return magnitude() > other.magnitude();
-}
-
-bool Vector2::operator<=(const Vector2& other) const {
-	return magnitude() <= other.magnitude();
-}
-
-bool Vector2::operator>=(const Vector2& other) const {
-	return magnitude() >= other.magnitude();
-}
-
-bool Vector2::operator==(const Vector2& other) const {
-	return x == other.x && y == other.y;
-}
-
-bool Vector2::operator!=(const Vector2& other) const {
-	return x != other.x || y != other.y;
-}
-
-
-bool Vector2::operator<(float mag) const {
-	return magnitude() < mag;
-}
-
-bool Vector2::operator>(float mag) const {
-	return magnitude() > mag;
-}
-
-bool Vector2::operator<=(float mag) const {
-	return magnitude() <= mag;
-}
-
-bool Vector2::operator>=(float mag) const {
-	return magnitude() >= mag;
-}
-
 
 Vector2& Vector2::operator+=(const Vector2& other) {
 	x += other.x;
@@ -111,6 +71,11 @@ Vector2& Vector2::operator/=(float scale) {
 	return *this;
 }
 
+Vector2 Vector2::operator-() const {
+	return Vector2(-x, -y);
+}
+
+#pragma mark - Methods -
 
 float Vector2::sqrmagnitude() const {
 	return x*x + y*y;
@@ -118,6 +83,14 @@ float Vector2::sqrmagnitude() const {
 
 float Vector2::magnitude() const {
     return sqrt(x*x + y*y);
+}
+
+float Vector2::angle(const Vector2& other) const {
+	return acosf(dot(other) / (magnitude() * other.magnitude()));
+}
+
+float Vector2::anglenorm(const Vector2& other) const {
+	return acosf(dot(other));
 }
 
 const Vector2 Vector2::normalize() const {
@@ -143,10 +116,34 @@ Vector2& Vector2::inormalize() {
     return *this;
 }
 
-Vector2 Vector2::reflect(const Vector2 &normal) const {
-	float dotted = dot(normal);
-	return {x - ((2.0f * dotted) * normal.x),
-		    y - ((2.0f * dotted) * normal.y)};
+Vector2 Vector2::project(const Vector2& target) const {
+	return target * (dot(target) / target.dot(target));
+}
+
+Vector2& Vector2::iproject(const Vector2& target) {
+	return *this = project(target);
+}
+
+Vector2 Vector2::reflect(Vector2 normal) const {
+	normal.inormalize();
+	return *this - 2.0f * normal * dot(normal);
+}
+
+Vector2& Vector2::ireflect(Vector2 normal) {
+	normal.inormalize();
+	return *this -= 2.0f * normal * dot(normal);
+}
+
+Vector2 Vector2::rotate(float radians) const {
+	return Vector2(x * cosf(radians) - y * sinf(radians),
+	               y * cosf(radians) + x * sinf(radians));
+}
+
+Vector2& Vector2::irotate(float radians) {
+	float tmp = x * cosf(radians) - y * sinf(radians);
+	y = y * cosf(radians) + x * sinf(radians);
+	x = tmp;
+	return *this;
 }
 
 float Vector2::sqrdistance(const Vector2& other) const {
@@ -165,77 +162,126 @@ float Vector2::dot(const Vector2& other) const {
 	return x * other.x + y * other.y;
 }
 
+Vector2 Vector2::transform(const sge::Matrix &mat) const {
+	return Vector2(x * mat.m11 + y * mat.m21 + mat.m41,
+	               x * mat.m12 + y * mat.m22 + mat.m42);
+}
+
+Vector2& Vector2::itransform(const sge::Matrix &mat) {
+	float tmp = x * mat.m11 + y * mat.m21 + mat.m41;
+	y = x * mat.m12 + y * mat.m22 + mat.m42;
+	x = tmp;
+	return *this;
+}
+
+
+#pragma mark - Comparison Operators -
+
+bool sge::operator<(const Vector2& l, const Vector2& r) {
+	return l.magnitude() < r.magnitude();
+}
+
+bool sge::operator>(const Vector2& l, const Vector2& r) {
+	return l.magnitude() > r.magnitude();
+}
+
+bool sge::operator<=(const Vector2& l, const Vector2& r) {
+	return l.magnitude() <= r.magnitude();
+}
+
+bool sge::operator>=(const Vector2& l, const Vector2& r) {
+	return l.magnitude() >= r.magnitude();
+}
+
+bool sge::operator==(const Vector2& l, const Vector2& r) {
+	return l.x == r.x && l.y == r.y;
+}
+
+bool sge::operator!=(const Vector2& l, const Vector2& r) {
+	return l.x != r.x || l.y != r.y;
+}
+
+// Left side
+bool sge::operator<(const Vector2& l, float mag) {
+	return l.magnitude() < mag;
+}
+
+bool sge::operator>(const Vector2& l, float mag) {
+	return l.magnitude() > mag;
+}
+
+bool sge::operator<=(const Vector2& l, float mag) {
+	return l.magnitude() <= mag;
+}
+
+bool sge::operator>=(const Vector2& l, float mag) {
+	return l.magnitude() >= mag;
+}
+
+// Right side
+bool sge::operator<(float mag, const Vector2& r) {
+	return mag < r.magnitude();
+}
+
+bool sge::operator>(float mag, const Vector2& r) {
+	return mag > r.magnitude();
+}
+
+bool sge::operator<=(float mag, const Vector2& r) {
+	return mag <= r.magnitude();
+}
+
+bool sge::operator>=(float mag, const Vector2& r) {
+	return mag >= r.magnitude();
+}
+
+#pragma mark - Arithmetic -
 
 const Vector2 sge::operator+(const Vector2& vec, const Vector2& other) {
-	Vector2 ret;
-	ret.x = vec.x + other.x;
-	ret.y = vec.y + other.y;
-	return ret;
+	return Vector2(vec.x + other.x, vec.y + other.y);
 }
 
 const Vector2 sge::operator+(const Vector2& vec, float amount) {
-	Vector2 ret;
-	ret.x = vec.x + amount;
-	ret.y = vec.y + amount;
-	return ret;
+	return Vector2(vec.x + amount, vec.y + amount);
 }
 
 const Vector2 sge::operator+(float amount, const Vector2& vec) {
-	Vector2 ret;
-	ret.x = vec.x + amount;
-	ret.y = vec.y + amount;
-	return ret;
-}
-
-const Vector2 sge::operator-(const Vector2& vec) {
-	Vector2 ret;
-	ret.x = -vec.x;
-	ret.y = -vec.y;
-	return ret;
+	return Vector2(vec.x + amount, vec.y + amount);
 }
 
 const Vector2 sge::operator-(const Vector2& vec, const Vector2& other) {
-	Vector2 ret;
-	ret.x = vec.x - other.x;
-	ret.y = vec.y - other.y;
-	return ret;
+	return Vector2(vec.x - other.x, vec.y - other.y);
 }
 
 const Vector2 sge::operator-(const Vector2& vec, float amount) {
-	Vector2 ret;
-	ret.x = vec.x - amount;
-	ret.y = vec.y - amount;
-	return ret;
+	return Vector2(vec.x - amount, vec.y - amount);
 }
 
 const Vector2 sge::operator-(float amount, const Vector2& vec) {
-	Vector2 ret;
-	ret.x = amount - vec.x;
-	ret.y = amount - vec.y;
-	return ret;
+	return Vector2(amount - vec.x, amount - vec.y);
+}
+
+const Vector2 sge::operator*(const Vector2& a, const Vector2& b) {
+	return a.dot(b);
 }
 
 const Vector2 sge::operator*(const Vector2& vec, float scale) {
-	Vector2 ret;
-	ret.x = vec.x * scale;
-	ret.y = vec.y * scale;
-	return ret;
+	return Vector2(vec.x * scale, vec.y * scale);
 }
 
 const Vector2 sge::operator*(float scale, const Vector2& vec) {
-	Vector2 ret;
-	ret.x = vec.x * scale;
-	ret.y = vec.y * scale;
-	return ret;
+	return Vector2(vec.x * scale, vec.y * scale);
+}
+
+const Vector2 sge::operator/(const Vector2& a, const Vector2& b) {
+	return Vector2(a.x / b.x, a.y / b.y);
 }
 
 const Vector2 sge::operator/(const Vector2& vec, float scale) {
-	Vector2 ret;
-	ret.x = vec.x / scale;
-	ret.y = vec.y / scale;
-	return ret;
+	return Vector2(vec.x / scale, vec.y / scale);
 }
 
+#pragma mark - Stream Insertion -
 
 std::ostream& sge::operator<<(std::ostream& stream, const Vector2& vec) {
 	std::stringstream ss;

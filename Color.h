@@ -6,10 +6,12 @@
 //  Copyright (c) 2013 C0deH4cker. All rights reserved.
 //
 
-#pragma once
+#ifndef _SGE_COLOR_H_
+#define _SGE_COLOR_H_
 
 
 namespace sge {
+	/*! Represents a color in RGBA format. */
 	struct Color {
 		/* Yes these are stolen from XNA */
 		static const Color AliceBlue;
@@ -155,17 +157,36 @@ namespace sge {
 		static const Color Yellow;
 		static const Color YellowGreen;
 
-		
+		/*! Components of the color. */
 		float r, g, b, a;
 		
+		/*! Constructs the color black. */
 		Color();
+		
+		/*! Copies a color.
+		 @param orig The source color to copy.
+		 */
 		Color(const Color& orig);
+		
+		/*! Construct a color given its components.
+		 @param r Red component of the color.
+		 @param g Green component of the color.
+		 @param b Blue component of the color.
+		 @param a Alpha (transparency) component of the color. Defaults to 1.0f (opaque).
+		 */
 		Color(float r, float g, float b, float a=1.0f);
+		
+		/*! Constructs a color given its 24-bit representation.
+		 @param rgb 24-bit representation of the color. MSB is r, middle is b, LSB is g.
+		 @param a Alpha (transparency) component of the color. Defaults to 1.0f (opaque).
+		 */
 		Color(unsigned rgb, float a=1.0f);
 		
 		Color& operator=(const Color& color);
 		
-		void apply(void) const;
+		/*! Makes the color the active color to be applied to drawn vertices. */
+		void apply() const;
 	};
 }
 
+#endif /* _SGE_COLOR_H_ */

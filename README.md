@@ -18,11 +18,11 @@ This project relies on the following libraries:
 
 
 There is a sample project for this [here](https://github.com/C0deH4cker/Ballz).
+And now there is a [Flappy Bird clone](https://github.com/C0deH4cker/FlappingBird) too!
 
 
 ###TODO:
 
 * Add a SpriteBatch class to make rendering textures faster
 * Fullscreen support
-* Matrices
 * Allow drawing text

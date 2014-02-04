@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 C0deH4cker. All rights reserved.
 //
 
-#pragma once
+#ifndef _SGE_HELPERS_H_
+#define _SGE_HELPERS_H_
 
 #include <vector>
 #include <OpenGL/gl.h>
@@ -38,3 +39,4 @@ inline void glBufferData(GLenum target, const std::vector<T>& v, GLenum usage) {
     glBufferData(target, v.size() * sizeof(T), &v[0], usage);
 }
 
+#endif /* _SGE_HELPERS_H_ */
