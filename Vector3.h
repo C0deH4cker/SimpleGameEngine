@@ -10,6 +10,7 @@
 #define _SGE_VECTOR3_H_
 
 #include <ostream>
+#include "Matrix.h"
 
 
 namespace sge {
