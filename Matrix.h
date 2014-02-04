@@ -24,7 +24,7 @@ namespace sge {
 			   float m31, float m32, float m33, float m34,
 			   float m41, float m42, float m43, float m44);
 		Matrix(const float cells[]);
-		Matrix(float scalar=0.0f);
+		Matrix(float scalar);
 		Matrix(const Matrix& other);
 		Matrix();
 		
