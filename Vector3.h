@@ -10,7 +10,7 @@
 #define _SGE_VECTOR3_H_
 
 #include <ostream>
-#include "Matrix.h"
+#include "Matrix4.h"
 
 
 namespace sge {
@@ -84,13 +84,13 @@ namespace sge {
 		 @param mat Transformation matrix to apply to the vector.
 		 @return Newly transformed vector.
 		 */
-		Vector3 transform(const Matrix& mat) const;
+		Vector3 transform(const Matrix4& mat) const;
 		
 		/*! Transforms the vector in-place using a transformation matrix.
 		 @param mat Transformation matrix to apply to the vector.
 		 @return Reference to the modified vector.
 		 */
-		Vector3& itransform(const Matrix& mat);
+		Vector3& itransform(const Matrix4& mat);
 	} __attribute__((__packed__));
 	
 	// Relational operators

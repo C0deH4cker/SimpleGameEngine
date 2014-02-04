@@ -75,8 +75,10 @@ void Window::updateGL() {
 	if(!initialized) return;
 	
 	// Set the viewport to cover the new window size
-	// XXX: Why do I need to multiply the width and height by 2??? Retina?
-	glViewport(0, 0, width * 2, height * 2);
+	// To ensure we cover the entire window, use framebuffer size
+	int fbwidth, fbheight;
+	glfwGetFramebufferSize(glwindow, &fbwidth, &fbheight);
+	glViewport(0, 0, fbwidth, fbheight);
 	
 	// Set the aspect ratio of the clipping area to match the viewport
 	glMatrixMode(GL_PROJECTION);
@@ -193,8 +195,7 @@ void Window::hideCursor(bool hide) {
 }
 
 void Window::toggleFullscreen() {
-	fullscreen = !fullscreen;
-	if(fullscreen)
+	if(!isFullscreen())
 		enableFullscreen();
 	else
 		disableFullscreen();
@@ -209,6 +210,6 @@ void Window::disableFullscreen() {
 }
 
 bool Window::isFullscreen() {
-	return fullscreen;
+	return glfwGetWindowMonitor(glwindow) != NULL;
 }
 

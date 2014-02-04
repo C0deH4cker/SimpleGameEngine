@@ -12,7 +12,7 @@
 #include <math.h>
 #include <png.h>
 #include "Rectangle.h"
-#include "Matrix.h"
+#include "Matrix4.h"
 #include "Vector2.h"
 
 using namespace sge;
