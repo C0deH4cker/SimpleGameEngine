@@ -10,7 +10,11 @@ OBJS= Color.o \
 	Window.o \
 	Camera.o \
 	Matrix4.o \
-	Vector4.o
+	Vector4.o \
+	SOIL/image_helper.o \
+	SOIL/stb_image_aug.o  \
+	SOIL/image_DXT.o \
+	SOIL/SOIL.o
 
 BUILD=build
 CXXFLAGS= -std=c++11 -Wall \
@@ -27,16 +31,23 @@ CXXFLAGS= -std=c++11 -Wall \
 	-Wno-unused-parameter \
 	-Wuninitialized \
 	-Wdouble-promotion
+
+
+CFLAGS=
+
 HEADERS=$(shell find . -not -path "./$(BUILD)/*" -name '*.h')
 DOC_CONFIG=doxygen_config
 
 all:
 	mkdir -p $(BUILD)
+	mkdir -p $(BUILD)/SOIL
 	$(MAKE) $(TARGET)
 
 dist: all
 	rm -f $(patsubst %, $(BUILD)/%, $(OBJS))
+	rm -rf $(BUILD)/SOIL
 	mkdir -p $(BUILD)/include
+	mkdir -p $(BUILD)/include/SOIL
 	$(MAKE) headers
 
 
@@ -45,6 +56,9 @@ $(TARGET): $(patsubst %, $(BUILD)/%, $(OBJS))
 
 $(BUILD)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(BUILD)/%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 headers: $(patsubst %, $(BUILD)/include/%, $(HEADERS))
 
