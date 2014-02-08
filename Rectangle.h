@@ -9,7 +9,7 @@
 #ifndef _SGE_RECTANGLE_H_
 #define _SGE_RECTANGLE_H_
 
-#include <Vector2.h>
+#include "Vector2.h"
 
 
 namespace sge {

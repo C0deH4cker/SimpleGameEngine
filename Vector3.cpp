@@ -141,13 +141,13 @@ Vector3 Vector3::cross(const Vector3& other) const {
 				   x*other.y - y*other.x);
 }
 
-Vector3 Vector3::transform(const Matrix& mat) const {
+Vector3 Vector3::transform(const Matrix4& mat) const {
 	return Vector3(x * mat.m11 + y * mat.m21 + z * mat.m31 + mat.m41,
 	               x * mat.m12 + y * mat.m22 + z * mat.m32 + mat.m42,
 	               x * mat.m13 + y * mat.m23 + z * mat.m33 + mat.m43);
 }
 
-Vector3& Vector3::itransform(const sge::Matrix &mat) {
+Vector3& Vector3::itransform(const sge::Matrix4& mat) {
 	float nx = x * mat.m11 + y * mat.m21 + z * mat.m31 + mat.m41;
 	float ny = x * mat.m12 + y * mat.m22 + z * mat.m32 + mat.m42;
 	z = x * mat.m13 + y * mat.m23 + z * mat.m33 + mat.m43;

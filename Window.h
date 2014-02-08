@@ -131,7 +131,7 @@ namespace sge {
 		unsigned width, height;
 		float planeWidth, planeHeight;
 		float aspect;
-		bool resizeable, keepRatio, fullscreen;
+		bool resizeable, keepRatio;
 		bool cursorHidden;
 		
 		void construct();
