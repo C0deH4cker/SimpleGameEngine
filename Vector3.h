@@ -10,6 +10,7 @@
 #define _SGE_VECTOR3_H_
 
 #include <ostream>
+#include "sge_depends.h"
 #include "Matrix4.h"
 
 
@@ -91,7 +92,7 @@ namespace sge {
 		 @return Reference to the modified vector.
 		 */
 		Vector3& itransform(const Matrix4& mat);
-	} __attribute__((__packed__));
+	} ATTRIB_PACKED;
 	
 	// Relational operators
 	bool operator<(const Vector3& l, const Vector3& r);

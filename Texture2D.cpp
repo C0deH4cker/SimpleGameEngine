@@ -8,9 +8,9 @@
 
 #include "Texture2D.h"
 #include <string>
-#include <OpenGL/gl.h>
 #include <math.h>
 #include <png.h>
+#include "sge_depends.h"
 #include "Rectangle.h"
 #include "Matrix4.h"
 #include "Vector2.h"

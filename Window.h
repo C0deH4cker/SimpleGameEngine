@@ -9,8 +9,8 @@
 #ifndef _SGE_WINDOW_H_
 #define _SGE_WINDOW_H_
 
-#include <GLFW/glfw3.h>
 #include <string>
+#include "sge_depends.h"
 #include "Color.h"
 #include "Rectangle.h"
 

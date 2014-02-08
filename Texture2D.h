@@ -10,7 +10,7 @@
 #define _SGE_TEXTURE2D_H_
 
 #include <string>
-#include <OpenGL/gl.h>
+#include "sge_depends.h"
 #include "Rectangle.h"
 
 

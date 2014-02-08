@@ -9,6 +9,7 @@
 #ifndef _SGE_RECTANGLE_H_
 #define _SGE_RECTANGLE_H_
 
+#include "sge_depends.h"
 #include "Vector2.h"
 
 
@@ -67,7 +68,7 @@ namespace sge {
 		Vector2 bottomLeft() const;
 		Vector2 bottomCenter() const;
 		Vector2 bottomRight() const;
-	};
+	} ATTRIB_PACKED;
 }
 
 #endif /* _SGE_RECTANGLE_H_ */

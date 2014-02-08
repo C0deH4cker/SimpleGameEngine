@@ -9,6 +9,7 @@
 #ifndef _SGE_SPRITE_H_
 #define _SGE_SPRITE_H_
 
+#include "sge_depends.h"
 #include "Texture2D.h"
 #include "Rectangle.h"
 

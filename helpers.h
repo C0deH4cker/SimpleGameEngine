@@ -10,7 +10,7 @@
 #define _SGE_HELPERS_H_
 
 #include <vector>
-#include <OpenGL/gl.h>
+#include "sge_depends.h"
 
 
 #define ABS(x) ({ \

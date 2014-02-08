@@ -7,8 +7,8 @@
 //
 
 #include "Color.h"
-#include <OpenGL/gl.h>
 #include <iostream>
+#include "sge_depends.h"
 #include "helpers.h"
 
 using namespace sge;

@@ -10,6 +10,7 @@
 #define _SGE_TIMER_H_
 
 #include <mach/mach_time.h>
+#include "sge_depends.h"
 
 
 namespace sge {

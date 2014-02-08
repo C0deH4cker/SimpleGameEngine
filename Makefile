@@ -1,16 +1,17 @@
 TARGET=sge
-OBJS= Color.o \
+OBJS= Camera.o \
+	Color.o \
 	Content.o \
 	Game.o \
+	Matrix4.o \
 	Rectangle.o \
+	Sprite.o \
 	Texture2D.o \
 	Timer.o \
 	Vector2.o \
 	Vector3.o \
-	Window.o \
-	Camera.o \
-	Matrix4.o \
-	Vector4.o
+	Vector4.o \
+	Window.o
 
 BUILD=build
 CXXFLAGS= -std=c++11 -Wall \

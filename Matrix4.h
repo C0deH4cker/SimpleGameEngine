@@ -9,6 +9,8 @@
 #ifndef _SGE_MATRIX4_H_
 #define _SGE_MATRIX4_H_
 
+#include "sge_depends.h"
+
 
 namespace sge {
 	struct Matrix4 {
