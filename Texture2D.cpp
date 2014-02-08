@@ -182,22 +182,15 @@ Texture2D::~Texture2D() {
 	glDeleteTextures(1, &gltexture);
 }
 
-static const GLfloat normals[4][3] = {
-	{0.0f, 0.0f, 1.0f},
-	{0.0f, 0.0f, 1.0f},
-	{0.0f, 0.0f, 1.0f},
-	{0.0f, 0.0f, 1.0f}
-};
-static const GLfloat texCoords[8] = {
-	0.0f, 1.0f,
-	1.0f, 1.0f,
-	1.0f, 0.0f,
-	0.0f, 0.0f
-};
 
 void Texture2D::draw(const Rectangle& frame, float rotation) const {
+	draw(frame, Rectangle(0.0f, 0.0f, width, height), rotation);
+}
+
+void Texture2D::draw(const sge::Rectangle &frame,
+					 const sge::Rectangle &sprite, float rotation) const {
 	Vector2 v[4] = {frame.topLeft(), frame.topRight(),
-	                frame.bottomRight(), frame.bottomLeft()};
+		frame.bottomRight(), frame.bottomLeft()};
 	
 	Vector2 center(frame.center());
 	
@@ -205,6 +198,16 @@ void Texture2D::draw(const Rectangle& frame, float rotation) const {
 		v[i] -= center;
 		v[i].irotate(rotation);
 		v[i] += center;
+	}
+	
+	Vector2 tex[4] = {sprite.topLeft(), sprite.topRight(),
+	                  sprite.bottomRight(), sprite.bottomLeft()};
+	
+	Vector2 scale(1.0f / width, 1.0f / height);
+	
+	for(int i = 0; i < 4; i++) {
+		tex[i].x *= scale.x;
+		tex[i].y = 1.0f - tex[i].y * scale.y;
 	}
 	
 	// Enable features
@@ -222,7 +225,7 @@ void Texture2D::draw(const Rectangle& frame, float rotation) const {
 	
 	// Set vertices
 	glVertexPointer(2, GL_FLOAT, 0, v);
-	glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
+	glTexCoordPointer(2, GL_FLOAT, 0, tex);
 	
 	// Draw image
 	glDrawArrays(GL_QUADS, 0, 4);
@@ -232,11 +235,6 @@ void Texture2D::draw(const Rectangle& frame, float rotation) const {
 	glDisable(GL_BLEND);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-}
-
-void Texture2D::draw(const sge::Rectangle &frame,
-					 const sge::Rectangle &sprite, float rotation) const {
-	// TODO: implement this
 }
 
 
