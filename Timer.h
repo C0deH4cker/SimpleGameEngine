@@ -9,7 +9,7 @@
 #ifndef _SGE_TIMER_H_
 #define _SGE_TIMER_H_
 
-#include <mach/mach_time.h>
+#include <chrono>
 #include "sge_depends.h"
 
 
@@ -39,10 +39,8 @@ namespace sge {
 		void reset();
 		
 	private:
-		mach_timebase_info_data_t timebase;
-		uint64_t lastTime;
-		
-		double convertElapsed(uint64_t) const;
+		std::chrono::steady_clock clock;
+		std::chrono::steady_clock::time_point lastTime;
 	};
 }
 

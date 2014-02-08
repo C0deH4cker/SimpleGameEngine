@@ -17,7 +17,6 @@
 
 using namespace sge;
 
-
 GLuint Texture2D::active = 0;
 
 GLuint Texture2D::loadPNG(const char* filename, int* width,

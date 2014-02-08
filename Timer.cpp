@@ -6,24 +6,19 @@
 //  Copyright (c) 2013 C0deH4cker. All rights reserved.
 //
 
-
-// TODO: Make this platform independent.
-
 #include "Timer.h"
-#include <mach/mach_time.h>
-
+#include <chrono>
 
 using namespace sge;
+using namespace std::chrono;
 
 Timer::Timer() {
-	mach_timebase_info(&timebase);
 	reset();
 }
 
 double Timer::elapsed() const {
-	uint64_t current = mach_absolute_time();
-	
-	return convertElapsed(current - lastTime);
+	auto span = duration_cast<duration<double> >(clock.now() - lastTime);
+	return span.count();
 }
 
 double Timer::tick() {
@@ -33,11 +28,6 @@ double Timer::tick() {
 }
 
 void Timer::reset() {
-	lastTime = mach_absolute_time();
-}
-
-
-double Timer::convertElapsed(uint64_t elapsed) const {
-	return (double)elapsed * timebase.numer / (timebase.denom * NSEC_PER_SEC);
+	lastTime = clock.now();
 }
 
