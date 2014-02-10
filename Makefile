@@ -1,6 +1,5 @@
 TARGET=sge
-OBJS= Camera.o \
-	Color.o \
+OBJS= Color.o \
 	Content.o \
 	Game.o \
 	Matrix4.o \
