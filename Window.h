@@ -124,6 +124,7 @@ namespace sge {
 	private:
 		std::string title;
 		GLFWwindow* glwindow;
+		GLFWwindow* fullscreenwindow;
 		Color color;
 		
 		bool initialized;
@@ -139,6 +140,7 @@ namespace sge {
 		void updateGL();
 		void didMove(int, int);
 		void didResize(int, int);
+		GLFWwindow* currentWindowContext();
 		
 		friend class Game;
 		friend void _cb_windowpos(GLFWwindow*, int, int);
