@@ -50,6 +50,11 @@ namespace sge {
 		 @param status Exit status code.
 		 */
 		void terminate(int status);
+
+		/*! Call this to switch to fullscreen-mode.
+		 @note registers callbacks automatically after switching.
+		 */
+		void toggleFullscreen();
 		
 #pragma mark - Required Virtual Methods -
 		/*!
