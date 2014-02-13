@@ -10,7 +10,6 @@ OBJS= Color.o \
 	Vector2.o \
 	Vector3.o \
 	Window.o \
-	Camera.o \
 	Matrix4.o \
 	Vector4.o \
 	SOIL/image_helper.o \
