@@ -7,9 +7,9 @@
 //
 
 #include "Game.h"
-#include <GLFW/glfw3.h>
 #include <stdlib.h>
 #include <iostream>
+#include "sge_depends.h"
 #include "Color.h"
 
 using namespace sge;

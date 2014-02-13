@@ -7,10 +7,9 @@
 //
 
 #include "Window.h"
-#include <OpenGL/glu.h>
-#include <GLFW/glfw3.h>
 #include <string>
 #include <iostream>
+#include "sge_depends.h"
 #include "Vector2.h"
 
 using namespace sge;

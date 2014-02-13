@@ -10,7 +10,7 @@
 #define _SGE_TEXTURE2D_H_
 
 #include <string>
-#include <OpenGL/gl.h>
+#include "sge_depends.h"
 #include "Rectangle.h"
 
 
@@ -38,7 +38,7 @@ namespace sge {
 		static GLuint loadPNG(const char* filename, int* width,
 							  int* height, GLenum filter);
 		
-		/*!Constructs a Texture2D from the texture found in `path`.
+		/*! Constructs a Texture2D from the texture found in `path`.
 		 @param path Path to the texture to load (currently only PNG supported).
 		 @param filter GL minification/magnification filter for the texture.
 		 */

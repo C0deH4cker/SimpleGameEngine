@@ -9,6 +9,8 @@
 #ifndef _SGE_COLOR_H_
 #define _SGE_COLOR_H_
 
+#include "sge_depends.h"
+
 
 namespace sge {
 	/*! Represents a color in RGBA format. */

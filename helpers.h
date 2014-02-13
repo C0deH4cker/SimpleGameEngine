@@ -10,7 +10,7 @@
 #define _SGE_HELPERS_H_
 
 #include <vector>
-#include <OpenGL/gl.h>
+#include "sge_depends.h"
 
 
 #define ABS(x) ({ \
@@ -32,6 +32,10 @@
 
 #define CLAMP(x, lo, hi) ({ \
 	MIN(hi, MAX(lo, x)); \
+})
+
+#define SIGN(x) ({ \
+	(x) < 0 ? -1 : 1; \
 })
 
 template <class T>

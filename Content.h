@@ -10,6 +10,7 @@
 #define _SGE_CONTENT_H_
 
 #include <string>
+#include "sge_depends.h"
 
 
 namespace sge {

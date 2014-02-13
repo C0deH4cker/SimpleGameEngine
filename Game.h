@@ -9,7 +9,7 @@
 #ifndef _SGE_GAME_H_
 #define _SGE_GAME_H_
 
-#include <GLFW/glfw3.h>
+#include "sge_depends.h"
 #include "Window.h"
 #include "Timer.h"
 #include "Vector2.h"

@@ -2,7 +2,9 @@ TARGET=sge
 OBJS= Color.o \
 	Content.o \
 	Game.o \
+	Matrix4.o \
 	Rectangle.o \
+	Sprite.o \
 	Texture2D.o \
 	Timer.o \
 	Vector2.o \
