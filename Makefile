@@ -1,4 +1,3 @@
-ROOT := $(abspath .)
 SRC := src
 BUILD := build
 
