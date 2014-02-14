@@ -35,12 +35,9 @@ all: $(LIB)
 $(BUILD):
 	mkdir -p $(BUILD)
 
-glfw:
-	git submodule update --init
-
-$(LIBGLFW): glfw
+$(LIBGLFW):
 	cmake $(GLFW)
-	cmake --build $(GLFW)
+	cmake --build $(GLFW) -- glfw
 
 glfwobjs: $(LIBGLFW) | $(BUILD)
 	$(eval ARCHIVED := $(filter %.o, $(shell $(AR) -t $<)))
@@ -61,13 +58,8 @@ doc: $(DOC_CONFIG)
 	mkdir -p $(BUILD)/doc
 	doxygen $<
 
-update: gitupdate all
-
-gitupdate:
-	git pull
-	git submodule update --init
-
 clean:
 	rm -rf $(BUILD)
 
-.PHONY: all clean doc gitupdate glfw glfwobjs update
+.PHONY: all clean doc glfw glfwobjs
+
