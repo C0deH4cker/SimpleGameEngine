@@ -47,12 +47,14 @@ namespace sge {
 		
 		/*! Draws the entire texture to the screen.
 		 @param frame Frame in which to draw the texture.
+		 @param rotation Angle in radians to rotate the texture before drawing.
 		 */
 		void draw(const Rectangle& frame, float rotation=0.0f) const;
 		
 		/*! Draws a portion of the texture to the screen.
 		 @param frame Frame in which to draw the partial texture.
 		 @param sprite Region of the texture to draw.
+		 @param rotation Angle in radians to rotate the texture before drawing.
 		 */
 		void draw(const Rectangle& frame, const Rectangle& sprite,
 				  float rotation=0.0f) const;

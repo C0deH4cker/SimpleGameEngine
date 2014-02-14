@@ -200,7 +200,6 @@ namespace sge {
 		
 		int status;
 		bool shutdown;
-		bool inRunLoop;
 		
 		void registerCallbacks();
 		void initGL();

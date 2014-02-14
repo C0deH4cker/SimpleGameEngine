@@ -1,19 +1,17 @@
-TARGET=sge
-OBJS= Color.o \
-	Content.o \
-	Game.o \
-	Matrix4.o \
-	Rectangle.o \
-	Sprite.o \
-	Texture2D.o \
-	Timer.o \
-	Vector2.o \
-	Vector3.o \
-	Vector4.o \
-	Window.o
+ROOT := $(abspath .)
+SRC := src
+BUILD := build
 
-BUILD=build
-CXXFLAGS= -std=c++11 -Wall \
+GLFW := glfw
+LIBGLFW := $(GLFW)/src/libglfw3.a
+GLFWOBJS := $(BUILD)/glfwobjs
+
+LIB := $(BUILD)/libsge.a
+SRCS := $(wildcard $(SRC)/*.cpp)
+OBJS := $(notdir $(SRCS:.cpp=.o))
+BUILDOBJS := $(addprefix $(BUILD)/, $(OBJS))
+
+CXXFLAGS := -Wall \
 	-Wextra \
 	-Wwrite-strings \
 	-Winit-self \
@@ -26,36 +24,51 @@ CXXFLAGS= -std=c++11 -Wall \
 	-Wmissing-include-dirs \
 	-Wno-unused-parameter \
 	-Wuninitialized \
-	-Wdouble-promotion
-HEADERS=$(shell find . -not -path "./$(BUILD)/*" -name '*.h')
-DOC_CONFIG=doxygen_config
+	-Wno-reorder
 
-all:
+override CXXFLAGS += -std=c++11 -I./include -I./$(GLFW)/include -I/opt/local/include
+
+DOC_CONFIG := doxygen_config
+
+
+all: $(LIB)
+
+$(BUILD):
 	mkdir -p $(BUILD)
-	$(MAKE) $(TARGET)
 
-dist: all
-	rm -f $(patsubst %, $(BUILD)/%, $(OBJS))
-	mkdir -p $(BUILD)/include
-	$(MAKE) headers
+$(GLFW):
+	git submodule update --init
 
+$(LIBGLFW): $(GLFW)
+	cmake $<
+	cmake --build $<
 
-$(TARGET): $(patsubst %, $(BUILD)/%, $(OBJS))
-	$(AR) rvs $(BUILD)/lib$@.a $^
+glfwobjs: $(LIBGLFW) | $(BUILD)
+	$(eval ARCHIVED := $(filter %.o, $(shell $(AR) -t $<)))
+	$(AR) -x $< $(ARCHIVED)
+	$(AR) -cruS $(LIB) $(ARCHIVED)
+	$(RM) $(ARCHIVED)
 
-$(BUILD)/%.o: %.cpp
+$(LIB)(%o): $(BUILD)/%o
+	$(AR) -cruS $@ $<
+
+$(LIB): glfwobjs $(LIB)($(OBJS))
+	-ranlib $@
+
+$(BUILD)/%.o: $(SRC)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-headers: $(patsubst %, $(BUILD)/include/%, $(HEADERS))
-
-$(BUILD)/include/%.h: %.h
-	cp $< $@
-
-doc:
+doc: $(DOC_CONFIG)
 	mkdir -p $(BUILD)/doc
-	doxygen $(DOC_CONFIG)
+	doxygen $<
 
+update: gitupdate all
+
+gitupdate:
+	git pull
+	git submodule update --init
 
 clean:
 	rm -rf $(BUILD)
 
+.PHONY: all clean doc gitupdate glfwobjs update
