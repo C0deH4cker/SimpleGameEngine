@@ -36,12 +36,12 @@ all: $(LIB)
 $(BUILD):
 	mkdir -p $(BUILD)
 
-$(GLFW):
+glfw:
 	git submodule update --init
 
-$(LIBGLFW): $(GLFW)
-	cmake $<
-	cmake --build $<
+$(LIBGLFW): glfw
+	cmake $(GLFW)
+	cmake --build $(GLFW)
 
 glfwobjs: $(LIBGLFW) | $(BUILD)
 	$(eval ARCHIVED := $(filter %.o, $(shell $(AR) -t $<)))
@@ -71,4 +71,4 @@ gitupdate:
 clean:
 	rm -rf $(BUILD)
 
-.PHONY: all clean doc gitupdate glfwobjs update
+.PHONY: all clean doc gitupdate glfw glfwobjs update
