@@ -39,8 +39,7 @@ glfw:
 	git submodule update --init
 
 $(LIBGLFW): glfw
-	cmake $(GLFW)
-	cmake --build $(GLFW)
+	cd $(GLFW) && cmake . && cmake --build .
 
 glfwobjs: $(LIBGLFW) | $(BUILD)
 	$(eval ARCHIVED := $(filter %.o, $(shell $(AR) -t $<)))
