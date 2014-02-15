@@ -18,4 +18,4 @@ Also, there is a [Flappy Bird clone](https://github.com/C0deH4cker/FlappingBird)
 ###TODO:
 
 * Add a SpriteBatch class to make rendering textures faster
-* Allow drawing text
+* Add support for playing sounds and music
