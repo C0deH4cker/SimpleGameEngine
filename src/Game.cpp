@@ -9,7 +9,7 @@
 #include "Game.h"
 #include <stdlib.h>
 #include <iostream>
-#include "sge_depends.h"
+#include "sge_internal.h"
 #include "Color.h"
 
 using namespace sge;
@@ -103,7 +103,7 @@ void Game::mainloop() {
 int Game::run() {
 	// Create the GLFW window and setup window related OpenGL parameters
 	window->construct();
-	glwindow = window->glwindow;
+	glwindow = window->currentWindowContext();
 	
 	// Register all of the event callbacks with GLFW
 	registerCallbacks();
@@ -245,5 +245,11 @@ void Game::registerCallbacks() {
 	glfwSetScrollCallback(w, _cb_scroll);
 	glfwSetKeyCallback(w, _cb_key);
 	glfwSetCharCallback(w, _cb_char);
+}
+
+void Game::toggleFullscreen() {
+	window->toggleFullscreen();
+	glwindow = window->currentWindowContext();
+	registerCallbacks();
 }
 

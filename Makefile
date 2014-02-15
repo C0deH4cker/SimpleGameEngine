@@ -1,14 +1,25 @@
 SRC := src
 BUILD := build
 
+LIB := $(BUILD)/libsge.a
+
 GLFW := glfw
 LIBGLFW := $(GLFW)/src/libglfw3.a
-GLFWOBJS := $(BUILD)/glfwobjs
 
-LIB := $(BUILD)/libsge.a
+SOIL := SOIL
+SOILBUILD := $(BUILD)/SOIL
+SOILSRCS := $(wildcard $(SOIL)/*.c)
+SOILOBJS := $(notdir $(SOILSRCS:.c=.o))
+SOILBUILT := $(addprefix $(SOILBUILD)/, $(SOILOBJS))
+
 SRCS := $(wildcard $(SRC)/*.cpp)
 OBJS := $(notdir $(SRCS:.cpp=.o))
-BUILDOBJS := $(addprefix $(BUILD)/, $(OBJS))
+BUILT := $(addprefix $(BUILD)/, $(OBJS))
+
+OBJS += $(SOILOBJS)
+BUILT += $(SOILBUILT)
+
+DIRS := $(BUILD) $(SOILBUILD)
 
 CXXFLAGS := -Wall \
 	-Wextra \
@@ -25,15 +36,15 @@ CXXFLAGS := -Wall \
 	-Wuninitialized \
 	-Wno-reorder
 
-override CXXFLAGS += -std=c++11 -I./include -I./$(GLFW)/include -I/opt/local/include
+override CXXFLAGS += -std=c++11 -I. -I./include -I./$(GLFW)/include
 
 DOC_CONFIG := doxygen_config
 
 
 all: $(LIB)
 
-$(BUILD):
-	mkdir -p $(BUILD)
+$(DIRS):
+	mkdir -p $@
 
 $(LIBGLFW):
 	cmake $(GLFW)
@@ -45,13 +56,13 @@ glfwobjs: $(LIBGLFW) | $(BUILD)
 	$(AR) -cruS $(LIB) $(ARCHIVED)
 	$(RM) $(ARCHIVED)
 
-$(LIB)(%o): $(BUILD)/%o
-	$(AR) -cruS $@ $<
+$(LIB): $(BUILT) | glfwobjs
+	$(AR) -crus $@ $?
 
-$(LIB): glfwobjs $(LIB)($(OBJS))
-	-ranlib $@
+$(SOILBUILD)/%.o: $(SOIL)/%.c | $(SOILBUILD)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(BUILD)/%.o: $(SRC)/%.cpp
+$(BUILD)/%.o: $(SRC)/%.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 doc: $(DOC_CONFIG)

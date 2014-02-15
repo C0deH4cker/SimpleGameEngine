@@ -38,9 +38,4 @@
 	(x) < 0 ? -1 : 1; \
 })
 
-template <class T>
-inline void glBufferData(GLenum target, const std::vector<T>& v, GLenum usage) {
-    glBufferData(target, v.size() * sizeof(T), &v[0], usage);
-}
-
 #endif /* _SGE_HELPERS_H_ */

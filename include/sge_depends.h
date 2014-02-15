@@ -17,12 +17,12 @@
 # define __has_include(x) 1
 #endif
 
-#if __has_include(<glfw3.h>)
-# include <glfw3.h>
-#elif __has_include(<GLFW/glfw3.h>)
-# include <GLFW/glfw3.h>
+#if __has_include(<gl.h>)
+# include <gl.h>
+#elif __has_include(<OpenGL/gl.h>)
+# include <OpenGL/gl.h>
 #else
-# error Couldn't find glfw3.h!
+# error Couldn't find gl.h!
 #endif
 
 #if __has_attribute(__packed__)

@@ -14,7 +14,6 @@ Designed with the following principles in mind:
 This project relies on the following libraries:
 
 * [glfw](http://www.glfw.org/)
-* [libpng](http://www.libpng.org/)
 
 
 There is a sample project for this [here](https://github.com/C0deH4cker/Ballz).

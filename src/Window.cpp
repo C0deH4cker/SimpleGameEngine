@@ -16,9 +16,9 @@ using namespace sge;
 
 Window::Window(std::string title, int x, int y,
 			   unsigned width, unsigned height, bool resizeable)
-: title(title), glwindow(NULL), initialized(false), x(x), y(y),
-width(width), height(height), resizeable(resizeable), keepRatio(false),
-cursorHidden(false) {
+: title(title), glwindow(NULL), fullscreenwindow(NULL), initialized(false),
+x(x), y(y), width(width), height(height), resizeable(resizeable),
+keepRatio(false), cursorHidden(false) {
 	
 }
 
@@ -46,6 +46,8 @@ void Window::construct() {
 	updateGL();
 	
 	glClearColor(color.r, color.g, color.b, color.a);
+
+	fullscreenwindow = NULL;
 }
 
 void Window::updateSize(unsigned newWidth, unsigned newHeight) {
@@ -120,7 +122,7 @@ void Window::clear() {
 void Window::render() {
 	// Don't check for initialization here either for the same
 	// reasons stated above.
-	glfwSwapBuffers(glwindow);
+	glfwSwapBuffers(currentWindowContext());
 }
 
 const std::string& Window::getTitle() {
@@ -132,7 +134,7 @@ void Window::setTitle(std::string title) {
 	
 	if(!initialized) return;
 	
-	glfwSetWindowTitle(glwindow, title.c_str());
+	glfwSetWindowTitle(currentWindowContext(), title.c_str());
 }
 
 void Window::setPreservesAspectRatio(bool preserve) {
@@ -162,7 +164,7 @@ void Window::setSize(unsigned newWidth, unsigned newHeight) {
 	// Actually apply the size change
 	if(!initialized) return;
 	
-	glfwSetWindowSize(glwindow, width, height);
+	glfwSetWindowSize(currentWindowContext(), width, height);
 	
 	updateGL();
 }
@@ -181,7 +183,7 @@ void Window::setPosition(int x, int y) {
 	
 	if(!initialized) return;
 	
-	glfwSetWindowPos(glwindow, x, y);
+	glfwSetWindowPos(currentWindowContext(), x, y);
 }
 
 void Window::hideCursor(bool hide) {
@@ -189,7 +191,7 @@ void Window::hideCursor(bool hide) {
 	
 	if(!initialized) return;
 	
-	glfwSetInputMode(glwindow, GLFW_CURSOR,
+	glfwSetInputMode(currentWindowContext(), GLFW_CURSOR,
 					 hide ? GLFW_CURSOR_HIDDEN : GLFW_CURSOR_NORMAL);
 }
 
@@ -201,14 +203,33 @@ void Window::toggleFullscreen() {
 }
 
 void Window::enableFullscreen() {
-	// TODO: add fullscreen support
+	if(!isFullscreen()) {
+		fullscreenwindow = glfwCreateWindow(width, height, title.c_str(), glfwGetPrimaryMonitor(), glwindow);
+		glfwMakeContextCurrent(fullscreenwindow);
+		hideCursor(cursorHidden);
+		updateGL();
+		glClearColor(color.r, color.g, color.b, color.a);
+	}
 }
 
 void Window::disableFullscreen() {
-	
+	if(isFullscreen()) {
+		glfwDestroyWindow(fullscreenwindow);
+		fullscreenwindow = NULL;
+		glfwMakeContextCurrent(glwindow);
+		hideCursor(cursorHidden);
+		setPosition(x, y);
+		updateGL();
+	}
 }
 
 bool Window::isFullscreen() {
-	return glfwGetWindowMonitor(glwindow) != NULL;
+	return fullscreenwindow != NULL;
+}
+
+GLFWwindow* Window::currentWindowContext() {
+	if(isFullscreen())
+		return fullscreenwindow;
+	return glwindow;
 }
 

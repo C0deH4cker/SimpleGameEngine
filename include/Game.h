@@ -9,7 +9,7 @@
 #ifndef _SGE_GAME_H_
 #define _SGE_GAME_H_
 
-#include "sge_depends.h"
+#include "sge_internal.h"
 #include "Window.h"
 #include "Timer.h"
 #include "Vector2.h"
@@ -50,6 +50,11 @@ namespace sge {
 		 @param status Exit status code.
 		 */
 		void terminate(int status);
+
+		/*! Call this to switch to fullscreen-mode.
+		 @note registers callbacks automatically after switching.
+		 */
+		void toggleFullscreen();
 		
 #pragma mark - Required Virtual Methods -
 		/*!
