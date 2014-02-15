@@ -1,7 +1,11 @@
 SRC := src
 BUILD := build
 
-LIB := $(BUILD)/libsge.a
+LIBNAME := libsge.a
+LIB := $(BUILD)/$(LIBNAME)
+TARNAME := sge.tgz
+TARBALL := $(BUILD)/$(TARNAME)
+TARCONTENTS := $(TARNAME) $(LIBNAME) include
 
 GLFW := glfw
 LIBGLFW := $(GLFW)/src/libglfw3.a
@@ -19,7 +23,8 @@ BUILT := $(addprefix $(BUILD)/, $(OBJS))
 OBJS += $(SOILOBJS)
 BUILT += $(SOILBUILT)
 
-DIRS := $(BUILD) $(SOILBUILD)
+DIRS := $(BUILD) $(SOILBUILD) $(BUILD)/include
+HEADERS := $(wildcard include/*.h) $(GLFW)/include/GLFW
 
 CXXFLAGS := -Wall \
 	-Wextra \
@@ -42,6 +47,19 @@ DOC_CONFIG := doxygen_config
 
 
 all: $(LIB)
+
+dist: $(TARBALL)
+
+docdist: $(LIB) headers doc
+	cd $(BUILD) && tar czf $(TARCONTENTS) doc
+
+$(TARBALL): $(LIB) headers
+	cd $(BUILD) && tar czf $(TARCONTENTS)
+
+headers: $(HEADERS) | $(BUILD) $(BUILD)/include
+	cp -r $^ $(BUILD)/include
+	mkdir -p $(BUILD)/include/SOIL
+	cp $(wildcard $(SOIL)/*.h) $(BUILD)/include/SOIL
 
 $(DIRS):
 	mkdir -p $@
@@ -72,5 +90,5 @@ doc: $(DOC_CONFIG)
 clean:
 	rm -rf $(BUILD)
 
-.PHONY: all clean doc glfw glfwobjs
+.PHONY: all clean dist doc docdist glfwobjs headers
 
