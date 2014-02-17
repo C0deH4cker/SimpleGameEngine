@@ -58,7 +58,7 @@ void Texture2D::draw(const sge::Rectangle &frame,
 	
 	for(int i = 0; i < 4; i++) {
 		v[i] -= center;
-		v[i].irotate(rotation);
+		v[i].irotate(-rotation);
 		v[i] += center;
 	}
 	

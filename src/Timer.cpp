@@ -12,13 +12,18 @@
 using namespace sge;
 using namespace std::chrono;
 
-Timer::Timer() {
-	reset();
+Timer::Timer()
+: skipped(0.0), isPaused(false) {
+	startTime = lastTime = clock.now();
 }
 
 double Timer::elapsed() const {
-	auto span = duration_cast<duration<double> >(clock.now() - lastTime);
-	return span.count();
+	double ret = timeSince(lastTime) - skipped;
+	if(isPaused) {
+		ret -= timeSince(pauseTime);
+	}
+	
+	return ret;
 }
 
 double Timer::tick() {
@@ -27,7 +32,36 @@ double Timer::tick() {
 	return ret;
 }
 
+double Timer::totalTime() const {
+	return timeSince(startTime) - skipped;
+}
+
 void Timer::reset() {
+	isPaused = false;
+	skipped = 0.0;
 	lastTime = clock.now();
+}
+
+void Timer::pause() {
+	if(!isPaused) {
+		pauseTime = clock.now();
+		isPaused = true;
+	}
+}
+
+void Timer::resume() {
+	if(isPaused) {
+		skipped += timeSince(pauseTime);
+		isPaused = false;
+	}
+}
+
+bool Timer::paused() const {
+	return isPaused;
+}
+
+
+double Timer::timeSince(steady_clock::time_point old) const {
+	return duration_cast<duration<double> >(clock.now() - old).count();
 }
 
