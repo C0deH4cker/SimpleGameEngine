@@ -149,14 +149,14 @@ float Vector4::dot(const Vector4& other) const {
 	return x * other.x + y * other.y + z * other.z + w * other.w;
 }
 
-Vector4 Vector4::transform(const Matrix4& mat) const {
+Vector4 Vector4::transform(const Matrix& mat) const {
 	return Vector4(x * mat.m11 + y * mat.m21 + z * mat.m31 + w * mat.m41,
 	               x * mat.m12 + y * mat.m22 + z * mat.m32 + w * mat.m42,
 	               x * mat.m13 + y * mat.m23 + z * mat.m33 + w * mat.m43,
 	               x * mat.m14 + y * mat.m24 + z * mat.m34 + w * mat.m44);
 }
 
-Vector4& Vector4::itransform(const Matrix4& mat) {
+Vector4& Vector4::itransform(const Matrix& mat) {
 	float nx = x * mat.m11 + y * mat.m21 + z * mat.m31 + w * mat.m41;
 	float ny = x * mat.m12 + y * mat.m22 + z * mat.m32 + w * mat.m42;
 	float nz = x * mat.m13 + y * mat.m23 + z * mat.m33 + w * mat.m43;

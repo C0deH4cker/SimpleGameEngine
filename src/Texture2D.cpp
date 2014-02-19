@@ -12,7 +12,7 @@
 #include "sge_internal.h"
 #include "Texture2D.h"
 #include "Rectangle.h"
-#include "Matrix4.h"
+#include "Matrix.h"
 #include "Vector2.h"
 #include "SOIL/SOIL.h"
 

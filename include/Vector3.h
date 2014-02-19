@@ -11,7 +11,7 @@
 
 #include <ostream>
 #include "sge_depends.h"
-#include "Matrix4.h"
+#include "Matrix.h"
 
 
 namespace sge {
@@ -85,13 +85,13 @@ namespace sge {
 		 @param mat Transformation matrix to apply to the vector.
 		 @return Newly transformed vector.
 		 */
-		Vector3 transform(const Matrix4& mat) const;
+		Vector3 transform(const Matrix& mat) const;
 		
 		/*! Transforms the vector in-place using a transformation matrix.
 		 @param mat Transformation matrix to apply to the vector.
 		 @return Reference to the modified vector.
 		 */
-		Vector3& itransform(const Matrix4& mat);
+		Vector3& itransform(const Matrix& mat);
 	} ATTRIB_PACKED;
 	
 	// Relational operators
