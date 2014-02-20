@@ -65,8 +65,7 @@ $(DIRS):
 	mkdir -p $@
 
 $(LIBGLFW):
-	cmake $(GLFW)
-	cmake --build $(GLFW) -- glfw
+	cd $(GLFW); cmake .; cmake --build . -- glfw
 
 glfwobjs: $(LIBGLFW) | $(BUILD)
 	$(eval ARCHIVED := $(filter %.o, $(shell $(AR) -t $<)))
@@ -81,7 +80,6 @@ $(SOILBUILD)/%.o: $(SOIL)/%.c | $(SOILBUILD)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD)/%.o: $(SRC)/%.cpp | $(BUILD)
-	pwd
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 doc: $(DOC_CONFIG)

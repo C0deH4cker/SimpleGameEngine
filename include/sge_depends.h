@@ -17,8 +17,8 @@
 # define __has_include(x) 1
 #endif
 
-#if __has_include(<gl.h>)
-# include <gl.h>
+#if __has_include(<GL/gl.h>)
+# include <GL/gl.h>
 #elif __has_include(<OpenGL/gl.h>)
 # include <OpenGL/gl.h>
 #else
