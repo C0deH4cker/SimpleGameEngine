@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 C0deH4cker. All rights reserved.
 //
 
-#ifndef _SGE_Matrix_H_
-#define _SGE_Matrix_H_
+#ifndef _SGE_MATRIX_H_
+#define _SGE_MATRIX_H_
 
 #include "sge_depends.h"
 
@@ -78,4 +78,4 @@ namespace sge {
 }
 
 
-#endif /* _SGE_Matrix_H_ */
+#endif /* _SGE_MATRIX_H_ */
