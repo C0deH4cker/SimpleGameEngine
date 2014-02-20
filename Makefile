@@ -46,7 +46,7 @@ override CXXFLAGS += -std=c++11 -I. -I./include -I./$(GLFW)/include
 DOC_CONFIG := doxygen_config
 
 
-all: $(LIB)
+all: $(LIB) headers
 
 dist: $(TARBALL)
 
@@ -81,6 +81,7 @@ $(SOILBUILD)/%.o: $(SOIL)/%.c | $(SOILBUILD)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD)/%.o: $(SRC)/%.cpp | $(BUILD)
+	pwd
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 doc: $(DOC_CONFIG)

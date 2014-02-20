@@ -10,13 +10,6 @@
 #define _SGE_INTERNAL_H_
 
 #include "sge_depends.h"
-
-#if __has_include(<glfw3.h>)
-# include <glfw3.h>
-#elif __has_include(<GLFW/glfw3.h>)
-# include <GLFW/glfw3.h>
-#else
-# error Couldn't find glfw3.h!
-#endif
+#include "GLFW/glfw3.h"
 
 #endif /* _SGE_INTERNAL_H_ */
