@@ -8,7 +8,7 @@ TARBALL := $(BUILD)/$(TARNAME)
 TARCONTENTS := $(TARNAME) $(LIBNAME) include
 
 GLFW := glfw
-LIBGLFW := $(GLFW)/src/libglfw3.a
+LIBGLFW := $(BUILD)/$(GLFW)/src/libglfw3.a
 
 SOIL := SOIL
 SOILBUILD := $(BUILD)/SOIL
@@ -39,7 +39,8 @@ CXXFLAGS := -Wall \
 	-Wmissing-include-dirs \
 	-Wno-unused-parameter \
 	-Wuninitialized \
-	-Wno-reorder
+	-Wno-reorder \
+	-Wno-unknown-pragmas
 
 override CXXFLAGS += -std=c++11 -I. -I./include -I./$(GLFW)/include
 
@@ -65,10 +66,11 @@ $(DIRS):
 	mkdir -p $@
 
 $(LIBGLFW):
-	cd $(GLFW); cmake .; cmake --build . -- glfw
+	mkdir -p $(BUILD)/$(GLFW)
+	cd $(BUILD)/$(GLFW); cmake $(CMAKEFLAGS) ../../$(GLFW); make glfw
 
 glfwobjs: $(LIBGLFW) | $(BUILD)
-	$(eval ARCHIVED := $(filter %.o, $(shell $(AR) -t $<)))
+	$(eval ARCHIVED := $(filter %.o %.obj, $(shell $(AR) -t $<)))
 	$(AR) -x $< $(ARCHIVED)
 	$(AR) -cruS $(LIB) $(ARCHIVED)
 	$(RM) $(ARCHIVED)
