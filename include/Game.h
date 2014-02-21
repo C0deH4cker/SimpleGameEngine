@@ -9,7 +9,7 @@
 #ifndef _SGE_GAME_H_
 #define _SGE_GAME_H_
 
-#include "sge_depends.h"
+#include "sge_internal.h"
 #include "Window.h"
 #include "Timer.h"
 #include "Vector2.h"
@@ -205,7 +205,6 @@ namespace sge {
 		
 		int status;
 		bool shutdown;
-		bool inRunLoop;
 		
 		void registerCallbacks();
 		void initGL();

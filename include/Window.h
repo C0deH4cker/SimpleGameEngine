@@ -10,7 +10,7 @@
 #define _SGE_WINDOW_H_
 
 #include <string>
-#include "sge_depends.h"
+#include "sge_internal.h"
 #include "Color.h"
 #include "Rectangle.h"
 

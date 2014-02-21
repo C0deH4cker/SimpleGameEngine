@@ -16,9 +16,9 @@ using namespace sge;
 
 Window::Window(std::string title, int x, int y,
 			   unsigned width, unsigned height, bool resizeable)
-: title(title), x(x), y(y), width(width), height(height), keepRatio(false),
-resizeable(resizeable), glwindow(NULL), initialized(false),
-cursorHidden(false) {
+: title(title), glwindow(NULL), fullscreenwindow(NULL), initialized(false),
+x(x), y(y), width(width), height(height), resizeable(resizeable),
+keepRatio(false), cursorHidden(false) {
 	
 }
 
@@ -228,8 +228,8 @@ bool Window::isFullscreen() {
 }
 
 GLFWwindow* Window::currentWindowContext() {
-	GLFWwindow* current = glwindow;
-	if(isFullscreen()) current = fullscreenwindow;
-	return current;
+	if(isFullscreen())
+		return fullscreenwindow;
+	return glwindow;
 }
 

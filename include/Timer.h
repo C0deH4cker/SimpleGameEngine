@@ -35,12 +35,32 @@ namespace sge {
 		 */
 		double tick();
 		
+		/*!
+		 Returns the total elapsed time since the timer was started.
+		 */
+		double totalTime() const;
+		
 		/*! Resets the timer to 0. */
 		void reset();
 		
+		/*! Pauses the timer. */
+		void pause();
+		
+		/*! Resumes the timer. */
+		void resume();
+		
+		/*! Returns true if the timer is currently paused, false otherwise. */
+		bool paused() const;
+		
 	private:
 		std::chrono::steady_clock clock;
+		std::chrono::steady_clock::time_point startTime;
 		std::chrono::steady_clock::time_point lastTime;
+		std::chrono::steady_clock::time_point pauseTime;
+		double skipped;
+		bool isPaused;
+		
+		double timeSince(std::chrono::steady_clock::time_point) const;
 	};
 }
 

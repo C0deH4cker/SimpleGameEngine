@@ -9,10 +9,10 @@
 #include "Texture2D.h"
 #include <string>
 #include <math.h>
-#include <glfw/glfw3.h>
+#include "sge_internal.h"
 #include "Texture2D.h"
 #include "Rectangle.h"
-#include "Matrix4.h"
+#include "Matrix.h"
 #include "Vector2.h"
 #include "SOIL/SOIL.h"
 
@@ -20,29 +20,24 @@ using namespace sge;
 
 GLuint Texture2D::active = 0;
 
-GLuint Texture2D::loadPNG(const char* filename, int* width,
+GLuint Texture2D::load(const char* filename, int* width,
                           int* height, GLenum filter) {
-    GLuint texture = SOIL_load_OGL_texture
-    (
-        filename,
-        SOIL_LOAD_AUTO,
-        SOIL_CREATE_NEW_ID,
-        SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-    );
+    GLuint texture = SOIL_load_OGL_texture(filename, SOIL_LOAD_RGBA,
+	                                       SOIL_CREATE_NEW_ID,
+                                           SOIL_FLAG_INVERT_Y);
 
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, active = texture);
     glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, width);
     glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, height);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-    glBindTexture(GL_TEXTURE_2D, active);
 	
     return texture;
 }
 
 
 Texture2D::Texture2D(const std::string& path, GLenum filter) {
-	gltexture = loadPNG(path.c_str(), &width, &height, filter);
+	gltexture = load(path.c_str(), &width, &height, filter);
 }
 
 Texture2D::~Texture2D() {
@@ -63,7 +58,7 @@ void Texture2D::draw(const sge::Rectangle &frame,
 	
 	for(int i = 0; i < 4; i++) {
 		v[i] -= center;
-		v[i].irotate(rotation);
+		v[i].irotate(-rotation);
 		v[i] += center;
 	}
 	
@@ -106,6 +101,6 @@ void Texture2D::draw(const sge::Rectangle &frame,
 
 
 bool Texture2D::isActive() const {
-	return gltexture == Texture2D::active;
+	return gltexture == active;
 }
 

@@ -9,7 +9,7 @@
 #include "Game.h"
 #include <stdlib.h>
 #include <iostream>
-#include "sge_depends.h"
+#include "sge_internal.h"
 #include "Color.h"
 
 using namespace sge;
@@ -43,8 +43,7 @@ namespace sge {
  occur during window construction.
  */
 Game::Game()
-: shutdown(false), inRunLoop(false), status(0)
-{
+: status(0), shutdown(false) {
 	if(game) {
 		std::cerr << "Error: There may only be one instance of Game at a time."
 		          << std::endl;

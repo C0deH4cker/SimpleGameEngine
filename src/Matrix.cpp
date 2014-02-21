@@ -1,24 +1,24 @@
 //
-//  Matrix4.cpp
+//  Matrix.cpp
 //  SimpleGameEngine
 //
 //  Created by C0deH4cker on 2/3/14.
 //  Copyright (c) 2014 C0deH4cker. All rights reserved.
 //
 
-#include "Matrix4.h"
+#include "Matrix.h"
 #include <stdexcept>
 #include <math.h>
 
 
 using namespace sge;
 
-const Matrix4 Matrix4::identity = Matrix4(1.0f, 0.0f, 0.0f, 0.0f,
+const Matrix Matrix::identity = Matrix(1.0f, 0.0f, 0.0f, 0.0f,
                                        0.0f, 1.0f, 0.0f, 0.0f,
                                        0.0f, 0.0f, 1.0f, 0.0f,
                                        0.0f, 0.0f, 0.0f, 1.0f);
 
-Matrix4::Matrix4(float m11, float m12, float m13, float m14,
+Matrix::Matrix(float m11, float m12, float m13, float m14,
 			   float m21, float m22, float m23, float m24,
 			   float m31, float m32, float m33, float m34,
 			   float m41, float m42, float m43, float m44)
@@ -27,29 +27,29 @@ Matrix4::Matrix4(float m11, float m12, float m13, float m14,
   m31(m31), m32(m32), m33(m33), m34(m34),
   m41(m41), m42(m42), m43(m43), m44(m44) {}
 
-Matrix4::Matrix4(const float cells[])
+Matrix::Matrix(const float cells[])
 : m11(cells[0]), m12(cells[1]), m13(cells[2]), m14(cells[3]),
   m21(cells[4]), m22(cells[5]), m23(cells[6]), m24(cells[7]),
   m31(cells[8]), m32(cells[9]), m33(cells[10]), m34(cells[11]),
   m41(cells[12]), m42(cells[13]), m43(cells[14]), m44(cells[15]) {}
 
-Matrix4::Matrix4(float scalar)
+Matrix::Matrix(float scalar)
 : m11(scalar), m12(scalar), m13(scalar), m14(scalar),
   m21(scalar), m22(scalar), m23(scalar), m24(scalar),
   m31(scalar), m32(scalar), m33(scalar), m34(scalar),
   m41(scalar), m42(scalar), m43(scalar), m44(scalar) {}
 
-Matrix4::Matrix4(const Matrix4& other)
+Matrix::Matrix(const Matrix& other)
 : m11(other.m11), m12(other.m12), m13(other.m13), m14(other.m14),
   m21(other.m21), m22(other.m22), m23(other.m23), m24(other.m24),
   m31(other.m31), m32(other.m32), m33(other.m33), m34(other.m34),
   m41(other.m41), m42(other.m42), m43(other.m43), m44(other.m44) {}
 
-Matrix4::Matrix4()
-: Matrix4(identity) {}
+Matrix::Matrix()
+: Matrix(identity) {}
 
-Matrix4 Matrix4::createRotationX(float radians) {
-	Matrix4 ret(identity);
+Matrix Matrix::createRotationX(float radians) {
+	Matrix ret(identity);
 	
 	float val1 = cosf(radians);
 	float val2 = sinf(radians);
@@ -62,8 +62,8 @@ Matrix4 Matrix4::createRotationX(float radians) {
 	return ret;
 }
 
-Matrix4 Matrix4::createRotationY(float radians) {
-	Matrix4 ret(identity);
+Matrix Matrix::createRotationY(float radians) {
+	Matrix ret(identity);
 	
 	float val1 = cosf(radians);
 	float val2 = sinf(radians);
@@ -76,8 +76,8 @@ Matrix4 Matrix4::createRotationY(float radians) {
 	return ret;
 }
 
-Matrix4 Matrix4::createRotationZ(float radians) {
-	Matrix4 ret(identity);
+Matrix Matrix::createRotationZ(float radians) {
+	Matrix ret(identity);
 	
 	float val1 = cosf(radians);
 	float val2 = sinf(radians);
@@ -90,8 +90,8 @@ Matrix4 Matrix4::createRotationZ(float radians) {
 	return ret;
 }
 
-Matrix4 Matrix4::createScale(float xscale, float yscale, float zscale) {
-	Matrix4 ret(0.0f);
+Matrix Matrix::createScale(float xscale, float yscale, float zscale) {
+	Matrix ret(0.0f);
 	
 	ret.m11 = xscale;
 	ret.m22 = yscale;
@@ -101,8 +101,8 @@ Matrix4 Matrix4::createScale(float xscale, float yscale, float zscale) {
 	return ret;
 }
 
-Matrix4 Matrix4::createScale(float scale) {
-	Matrix4 ret(0.0f);
+Matrix Matrix::createScale(float scale) {
+	Matrix ret(0.0f);
 	
 	ret.m11 = ret.m22 = ret.m33 = scale;
 	ret.m44 = 1.0f;
@@ -111,7 +111,7 @@ Matrix4 Matrix4::createScale(float scale) {
 }
 
 
-Matrix4& Matrix4::operator=(const Matrix4& other) {
+Matrix& Matrix::operator=(const Matrix& other) {
 	m11 = other.m11;
 	m12 = other.m12;
 	m13 = other.m13;
@@ -131,7 +131,7 @@ Matrix4& Matrix4::operator=(const Matrix4& other) {
 	return *this;
 }
 
-Matrix4& Matrix4::operator+=(const Matrix4& other) {
+Matrix& Matrix::operator+=(const Matrix& other) {
 	m11 += other.m11;
 	m12 += other.m12;
 	m13 += other.m13;
@@ -151,7 +151,7 @@ Matrix4& Matrix4::operator+=(const Matrix4& other) {
 	return *this;
 }
 
-Matrix4& Matrix4::operator+=(float scalar) {
+Matrix& Matrix::operator+=(float scalar) {
 	m11 += scalar;
 	m12 += scalar;
 	m13 += scalar;
@@ -171,7 +171,7 @@ Matrix4& Matrix4::operator+=(float scalar) {
 	return *this;
 }
 
-Matrix4& Matrix4::operator-=(const Matrix4& other) {
+Matrix& Matrix::operator-=(const Matrix& other) {
 	m11 -= other.m11;
 	m12 -= other.m12;
 	m13 -= other.m13;
@@ -191,7 +191,7 @@ Matrix4& Matrix4::operator-=(const Matrix4& other) {
 	return *this;
 }
 
-Matrix4& Matrix4::operator-=(float scalar) {
+Matrix& Matrix::operator-=(float scalar) {
 	m11 -= scalar;
 	m12 -= scalar;
 	m13 -= scalar;
@@ -211,7 +211,7 @@ Matrix4& Matrix4::operator-=(float scalar) {
 	return *this;
 }
 
-Matrix4& Matrix4::operator*=(const Matrix4& other) {
+Matrix& Matrix::operator*=(const Matrix& other) {
 	float m_11 = (m11 * other.m11) + (m12 * other.m21) + (m13 * other.m31) + (m14 * other.m41);
 	float m_12 = (m11 * other.m12) + (m12 * other.m22) + (m13 * other.m32) + (m14 * other.m42);
 	float m_13 = (m11 * other.m13) + (m12 * other.m23) + (m13 * other.m33) + (m14 * other.m43);
@@ -249,7 +249,7 @@ Matrix4& Matrix4::operator*=(const Matrix4& other) {
 	return *this;
 }
 
-Matrix4& Matrix4::operator*=(float scalar) {
+Matrix& Matrix::operator*=(float scalar) {
 	m11 *= scalar;
 	m12 *= scalar;
 	m13 *= scalar;
@@ -269,11 +269,11 @@ Matrix4& Matrix4::operator*=(float scalar) {
 	return *this;
 }
 
-Matrix4& Matrix4::operator/=(const Matrix4& other) {
+Matrix& Matrix::operator/=(const Matrix& other) {
 	return *this *= other.inverse();
 }
 
-Matrix4& Matrix4::operator/=(float scalar) {
+Matrix& Matrix::operator/=(float scalar) {
 	float factor = 1.0f / scalar;
 	
 	m11 *= factor;
@@ -295,7 +295,7 @@ Matrix4& Matrix4::operator/=(float scalar) {
 	return *this;
 }
 
-float& Matrix4::operator[](int index) {
+float& Matrix::operator[](int index) {
 	switch(index) {
 		case 0: return m11;
 		case 1: return m12;
@@ -315,11 +315,11 @@ float& Matrix4::operator[](int index) {
 		case 15: return m44;
 		
 		default:
-			throw std::out_of_range("Matrix4 index out of range.");
+			throw std::out_of_range("Matrix index out of range.");
 	}
 }
 
-float Matrix4::operator[](int index) const {
+float Matrix::operator[](int index) const {
 	switch(index) {
 		case 0: return m11;
 		case 1: return m12;
@@ -339,11 +339,11 @@ float Matrix4::operator[](int index) const {
 		case 15: return m44;
 			
 		default:
-			throw std::out_of_range("Matrix4 index out of range.");
+			throw std::out_of_range("Matrix index out of range.");
 	}
 }
 
-float& Matrix4::operator()(int row, int col) {
+float& Matrix::operator()(int row, int col) {
 	switch(row) {
 		case 0: switch(col) {
 			case 0: return m11;
@@ -351,7 +351,7 @@ float& Matrix4::operator()(int row, int col) {
 			case 2: return m13;
 			case 3: return m14;
 			default:
-				throw std::out_of_range("Matrix4 column out of range.");
+				throw std::out_of_range("Matrix column out of range.");
 		}
 		case 1: switch(col) {
 			case 0: return m21;
@@ -359,7 +359,7 @@ float& Matrix4::operator()(int row, int col) {
 			case 2: return m23;
 			case 3: return m24;
 			default:
-				throw std::out_of_range("Matrix4 column out of range.");
+				throw std::out_of_range("Matrix column out of range.");
 		}
 		case 2: switch(col) {
 			case 0: return m31;
@@ -367,7 +367,7 @@ float& Matrix4::operator()(int row, int col) {
 			case 2: return m33;
 			case 3: return m34;
 			default:
-				throw std::out_of_range("Matrix4 column out of range.");
+				throw std::out_of_range("Matrix column out of range.");
 		}
 		case 3: switch(col) {
 			case 0: return m41;
@@ -375,15 +375,15 @@ float& Matrix4::operator()(int row, int col) {
 			case 2: return m43;
 			case 3: return m44;
 			default:
-				throw std::out_of_range("Matrix4 column out of range.");
+				throw std::out_of_range("Matrix column out of range.");
 		}
 		
 		default:
-			throw std::out_of_range("Matrix4 row out of range.");
+			throw std::out_of_range("Matrix row out of range.");
 	}
 }
 
-float Matrix4::operator()(int row, int col) const {
+float Matrix::operator()(int row, int col) const {
 	switch(row) {
 		case 0: switch(col) {
 			case 0: return m11;
@@ -391,7 +391,7 @@ float Matrix4::operator()(int row, int col) const {
 			case 2: return m13;
 			case 3: return m14;
 			default:
-				throw std::out_of_range("Matrix4 column out of range.");
+				throw std::out_of_range("Matrix column out of range.");
 		}
 		case 1: switch(col) {
 			case 0: return m21;
@@ -399,7 +399,7 @@ float Matrix4::operator()(int row, int col) const {
 			case 2: return m23;
 			case 3: return m24;
 			default:
-				throw std::out_of_range("Matrix4 column out of range.");
+				throw std::out_of_range("Matrix column out of range.");
 		}
 		case 2: switch(col) {
 			case 0: return m31;
@@ -407,7 +407,7 @@ float Matrix4::operator()(int row, int col) const {
 			case 2: return m33;
 			case 3: return m34;
 			default:
-				throw std::out_of_range("Matrix4 column out of range.");
+				throw std::out_of_range("Matrix column out of range.");
 		}
 		case 3: switch(col) {
 			case 0: return m41;
@@ -415,23 +415,23 @@ float Matrix4::operator()(int row, int col) const {
 			case 2: return m43;
 			case 3: return m44;
 			default:
-				throw std::out_of_range("Matrix4 column out of range.");
+				throw std::out_of_range("Matrix column out of range.");
 		}
 			
 		default:
-			throw std::out_of_range("Matrix4 row out of range.");
+			throw std::out_of_range("Matrix row out of range.");
 	}
 }
 
-Matrix4 Matrix4::operator-() const {
-	return Matrix4(-m11, -m12, -m13, -m14,
+Matrix Matrix::operator-() const {
+	return Matrix(-m11, -m12, -m13, -m14,
 	              -m21, -m22, -m23, -m24,
 	              -m31, -m32, -m33, -m34,
 	              -m41, -m42, -m43, -m44);
 }
 
 /* Based on http://stackoverflow.com/a/1148405/1344461 */
-bool Matrix4::invert() {
+bool Matrix::invert() {
 	float inv11 = m22 * m33 * m44 -
 	m22 * m34 * m43 -
 	m32 * m23 * m44 +
@@ -571,22 +571,22 @@ bool Matrix4::invert() {
 	return true;
 }
 
-Matrix4 Matrix4::inverse() const {
-	Matrix4 ret(*this);
+Matrix Matrix::inverse() const {
+	Matrix ret(*this);
 	if(ret.invert())
 		return ret;
 	
-	throw std::logic_error("Unable to invert Matrix4.");
+	throw std::logic_error("Unable to invert Matrix.");
 }
 
-Matrix4 Matrix4::transpose() const {
-	return Matrix4(m11, m21, m31, m41,
+Matrix Matrix::transpose() const {
+	return Matrix(m11, m21, m31, m41,
 	              m12, m22, m32, m42,
 	              m13, m23, m33, m43,
 	              m14, m24, m34, m44);
 }
 
-float Matrix4::determinant() const {
+float Matrix::determinant() const {
 	return m41 * m32 * m23 * m14 - m31 * m42 * m23 * m14 -
 	       m41 * m22 * m33 * m14 + m21 * m42 * m33 * m14 +
 	       m31 * m22 * m43 * m14 - m21 * m32 * m43 * m14 -
@@ -602,98 +602,98 @@ float Matrix4::determinant() const {
 }
 
 
-bool sge::operator==(const Matrix4& a, const Matrix4& b) {
+bool sge::operator==(const Matrix& a, const Matrix& b) {
 	return a.m11 == b.m11 && a.m12 == b.m12 && a.m13 == b.m13 && a.m14 == b.m14
 	    && a.m21 == b.m21 && a.m22 == b.m22 && a.m23 == b.m23 && a.m24 == b.m24
 	    && a.m31 == b.m31 && a.m32 == b.m32 && a.m33 == b.m33 && a.m34 == b.m34
 	    && a.m41 == b.m41 && a.m42 == b.m42 && a.m43 == b.m43 && a.m44 == b.m44;
 }
 
-bool sge::operator!=(const Matrix4& a, const Matrix4& b) {
+bool sge::operator!=(const Matrix& a, const Matrix& b) {
 	return !(a == b);
 }
 
-Matrix4 sge::operator+(const Matrix4& a, const Matrix4& b) {
-	return Matrix4(a.m11 + b.m11, a.m12 + b.m12, a.m13 + b.m13, a.m14 + b.m14,
+Matrix sge::operator+(const Matrix& a, const Matrix& b) {
+	return Matrix(a.m11 + b.m11, a.m12 + b.m12, a.m13 + b.m13, a.m14 + b.m14,
 	              a.m21 + b.m21, a.m22 + b.m22, a.m23 + b.m23, a.m24 + b.m24,
 	              a.m31 + b.m31, a.m32 + b.m32, a.m33 + b.m33, a.m34 + b.m34,
 	              a.m41 + b.m41, a.m42 + b.m42, a.m43 + b.m43, a.m44 + b.m44);
 }
 
-Matrix4 sge::operator+(const Matrix4& a, float b) {
-	return Matrix4(a.m11 + b, a.m12 + b, a.m13 + b, a.m14 + b,
+Matrix sge::operator+(const Matrix& a, float b) {
+	return Matrix(a.m11 + b, a.m12 + b, a.m13 + b, a.m14 + b,
 	              a.m21 + b, a.m22 + b, a.m23 + b, a.m24 + b,
 	              a.m31 + b, a.m32 + b, a.m33 + b, a.m34 + b,
 	              a.m41 + b, a.m42 + b, a.m43 + b, a.m44 + b);
 }
 
-Matrix4 sge::operator+(float a, const Matrix4&b) {
-	return Matrix4(a + b.m11, a + b.m12, a + b.m13, a + b.m14,
+Matrix sge::operator+(float a, const Matrix&b) {
+	return Matrix(a + b.m11, a + b.m12, a + b.m13, a + b.m14,
 	              a + b.m21, a + b.m22, a + b.m23, a + b.m24,
 	              a + b.m31, a + b.m32, a + b.m33, a + b.m34,
 	              a + b.m41, a + b.m42, a + b.m43, a + b.m44);
 }
 
-Matrix4 sge::operator-(const Matrix4& a, const Matrix4& b) {
-	return Matrix4(a.m11 - b.m11, a.m12 - b.m12, a.m13 - b.m13, a.m14 - b.m14,
+Matrix sge::operator-(const Matrix& a, const Matrix& b) {
+	return Matrix(a.m11 - b.m11, a.m12 - b.m12, a.m13 - b.m13, a.m14 - b.m14,
 	              a.m21 - b.m21, a.m22 - b.m22, a.m23 - b.m23, a.m24 - b.m24,
 	              a.m31 - b.m31, a.m32 - b.m32, a.m33 - b.m33, a.m34 - b.m34,
 	              a.m41 - b.m41, a.m42 - b.m42, a.m43 - b.m43, a.m44 - b.m44);
 }
 
-Matrix4 sge::operator-(const Matrix4&a, float b) {
-	return Matrix4(a.m11 - b, a.m12 - b, a.m13 - b, a.m14 - b,
+Matrix sge::operator-(const Matrix&a, float b) {
+	return Matrix(a.m11 - b, a.m12 - b, a.m13 - b, a.m14 - b,
 	              a.m21 - b, a.m22 - b, a.m23 - b, a.m24 - b,
 	              a.m31 - b, a.m32 - b, a.m33 - b, a.m34 - b,
 	              a.m41 - b, a.m42 - b, a.m43 - b, a.m44 - b);
 }
 
-Matrix4 sge::operator-(float a, const Matrix4&b) {
-	return Matrix4(a - b.m11, a - b.m12, a - b.m13, a - b.m14,
+Matrix sge::operator-(float a, const Matrix&b) {
+	return Matrix(a - b.m11, a - b.m12, a - b.m13, a - b.m14,
 	              a - b.m21, a - b.m22, a - b.m23, a - b.m24,
 	              a - b.m31, a - b.m32, a - b.m33, a - b.m34,
 	              a - b.m41, a - b.m42, a - b.m43, a - b.m44);
 }
 
-Matrix4 sge::operator*(const Matrix4& a, const Matrix4& b) {
-	Matrix4 ret(a);
+Matrix sge::operator*(const Matrix& a, const Matrix& b) {
+	Matrix ret(a);
 	ret *= b;
 	return ret;
 }
 
-Matrix4 sge::operator*(const Matrix4&a, float b) {
-	return Matrix4(a.m11 * b, a.m12 * b, a.m13 * b, a.m14 * b,
+Matrix sge::operator*(const Matrix&a, float b) {
+	return Matrix(a.m11 * b, a.m12 * b, a.m13 * b, a.m14 * b,
 	              a.m21 * b, a.m22 * b, a.m23 * b, a.m24 * b,
 	              a.m31 * b, a.m32 * b, a.m33 * b, a.m34 * b,
 	              a.m41 * b, a.m42 * b, a.m43 * b, a.m44 * b);
 }
 
-Matrix4 sge::operator*(float a, const Matrix4&b) {
-	return Matrix4(a * b.m11, a * b.m12, a * b.m13, a * b.m14,
+Matrix sge::operator*(float a, const Matrix&b) {
+	return Matrix(a * b.m11, a * b.m12, a * b.m13, a * b.m14,
 	              a * b.m21, a * b.m22, a * b.m23, a * b.m24,
 	              a * b.m31, a * b.m32, a * b.m33, a * b.m34,
 	              a * b.m41, a * b.m42, a * b.m43, a * b.m44);
 }
 
-Matrix4 sge::operator/(const Matrix4& a, const Matrix4& b) {
-	Matrix4 ret(a);
+Matrix sge::operator/(const Matrix& a, const Matrix& b) {
+	Matrix ret(a);
 	ret /= b;
 	return ret;
 }
 
-Matrix4 sge::operator/(const Matrix4&a, float b) {
+Matrix sge::operator/(const Matrix&a, float b) {
 	float n = 1.0f / b;
 	
-	return Matrix4(a.m11 * n, a.m12 * n, a.m13 * n, a.m14 * n,
+	return Matrix(a.m11 * n, a.m12 * n, a.m13 * n, a.m14 * n,
 	              a.m21 * n, a.m22 * n, a.m23 * n, a.m24 * n,
 	              a.m31 * n, a.m32 * n, a.m33 * n, a.m34 * n,
 	              a.m41 * n, a.m42 * n, a.m43 * n, a.m44 * n);
 }
 
-Matrix4 sge::operator/(float a, const Matrix4&b) {
-	Matrix4 m(b.inverse());
+Matrix sge::operator/(float a, const Matrix&b) {
+	Matrix m(b.inverse());
 	
-	return Matrix4(a * m.m11, a * m.m12, a * m.m13, a * m.m14,
+	return Matrix(a * m.m11, a * m.m12, a * m.m13, a * m.m14,
 	              a * m.m21, a * m.m22, a * m.m23, a * m.m24,
 	              a * m.m31, a * m.m32, a * m.m33, a * m.m34,
 	              a * m.m41, a * m.m42, a * m.m43, a * m.m44);

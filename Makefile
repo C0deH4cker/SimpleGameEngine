@@ -1,24 +1,32 @@
-TARGET=sge
-OBJS= Color.o \
-	Content.o \
-	Game.o \
-	Matrix4.o \
-	Rectangle.o \
-	Sprite.o \
-	Texture2D.o \
-	Timer.o \
-	Vector2.o \
-	Vector3.o \
-	Window.o \
-	Matrix4.o \
-	Vector4.o \
-	SOIL/image_helper.o \
-	SOIL/stb_image_aug.o  \
-	SOIL/image_DXT.o \
-	SOIL/SOIL.o
+SRC := src
+BUILD := build
 
-BUILD=build
-CXXFLAGS= -std=c++11 -Wall \
+LIBNAME := libsge.a
+LIB := $(BUILD)/$(LIBNAME)
+TARNAME := sge.tgz
+TARBALL := $(BUILD)/$(TARNAME)
+TARCONTENTS := $(TARNAME) $(LIBNAME) include
+
+GLFW := glfw
+LIBGLFW := $(GLFW)/src/libglfw3.a
+
+SOIL := SOIL
+SOILBUILD := $(BUILD)/SOIL
+SOILSRCS := $(wildcard $(SOIL)/*.c)
+SOILOBJS := $(notdir $(SOILSRCS:.c=.o))
+SOILBUILT := $(addprefix $(SOILBUILD)/, $(SOILOBJS))
+
+SRCS := $(wildcard $(SRC)/*.cpp)
+OBJS := $(notdir $(SRCS:.cpp=.o))
+BUILT := $(addprefix $(BUILD)/, $(OBJS))
+
+OBJS += $(SOILOBJS)
+BUILT += $(SOILBUILT)
+
+DIRS := $(BUILD) $(SOILBUILD) $(BUILD)/include
+HEADERS := $(wildcard include/*.h) $(GLFW)/include/GLFW
+
+CXXFLAGS := -Wall \
 	-Wextra \
 	-Wwrite-strings \
 	-Winit-self \
@@ -31,46 +39,55 @@ CXXFLAGS= -std=c++11 -Wall \
 	-Wmissing-include-dirs \
 	-Wno-unused-parameter \
 	-Wuninitialized \
-	-Wdouble-promotion
+	-Wno-reorder
+
+override CXXFLAGS += -std=c++11 -I. -I./include -I./$(GLFW)/include
+
+DOC_CONFIG := doxygen_config
 
 
-CFLAGS=
+all: $(LIB) headers
 
-HEADERS=$(shell find . -not -path "./$(BUILD)/*" -name '*.h')
-DOC_CONFIG=doxygen_config
+dist: $(TARBALL)
 
-all:
-	mkdir -p $(BUILD)
-	mkdir -p $(BUILD)/SOIL
-	$(MAKE) $(TARGET)
+docdist: $(LIB) headers doc
+	cd $(BUILD) && tar czf $(TARCONTENTS) doc
 
-dist: all
-	rm -f $(patsubst %, $(BUILD)/%, $(OBJS))
-	rm -rf $(BUILD)/SOIL
-	mkdir -p $(BUILD)/include
+$(TARBALL): $(LIB) headers
+	cd $(BUILD) && tar czf $(TARCONTENTS)
+
+headers: $(HEADERS) | $(BUILD) $(BUILD)/include
+	cp -r $^ $(BUILD)/include
 	mkdir -p $(BUILD)/include/SOIL
-	$(MAKE) headers
+	cp $(wildcard $(SOIL)/*.h) $(BUILD)/include/SOIL
 
+$(DIRS):
+	mkdir -p $@
 
-$(TARGET): $(patsubst %, $(BUILD)/%, $(OBJS))
-	$(AR) rvs $(BUILD)/lib$@.a $^
+$(LIBGLFW):
+	cd $(GLFW); cmake .; cmake --build . -- glfw
 
-$(BUILD)/%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+glfwobjs: $(LIBGLFW) | $(BUILD)
+	$(eval ARCHIVED := $(filter %.o, $(shell $(AR) -t $<)))
+	$(AR) -x $< $(ARCHIVED)
+	$(AR) -cruS $(LIB) $(ARCHIVED)
+	$(RM) $(ARCHIVED)
 
-$(BUILD)/%.o: %.c
+$(LIB): $(BUILT) | glfwobjs
+	$(AR) -crus $@ $?
+
+$(SOILBUILD)/%.o: $(SOIL)/%.c | $(SOILBUILD)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-headers: $(patsubst %, $(BUILD)/include/%, $(HEADERS))
+$(BUILD)/%.o: $(SRC)/%.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(BUILD)/include/%.h: %.h
-	cp $< $@
-
-doc:
+doc: $(DOC_CONFIG)
 	mkdir -p $(BUILD)/doc
-	doxygen $(DOC_CONFIG)
-
+	doxygen $<
 
 clean:
 	rm -rf $(BUILD)
+
+.PHONY: all clean dist doc docdist glfwobjs headers
 
