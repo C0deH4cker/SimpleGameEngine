@@ -39,7 +39,8 @@ CXXFLAGS := -Wall \
 	-Wmissing-include-dirs \
 	-Wno-unused-parameter \
 	-Wuninitialized \
-	-Wno-reorder
+	-Wno-reorder \
+	-Wno-unknown-pragmas
 
 override CXXFLAGS += -std=c++11 -I. -I./include -I./$(GLFW)/include
 
