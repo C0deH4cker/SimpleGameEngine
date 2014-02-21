@@ -18,11 +18,13 @@
 #endif
 
 #if __has_include(<GL/gl.h>)
+#define Rectangle __Windows_Rectangle
 # include <GL/gl.h>
+#undef Rectangle
 #elif __has_include(<OpenGL/gl.h>)
 # include <OpenGL/gl.h>
 #else
-# error Couldn't find gl.h!
+# error "Couldn't find gl.h!"
 #endif
 
 #if __has_attribute(__packed__)
