@@ -18,9 +18,10 @@
 #endif
 
 #if __has_include(<GL/gl.h>)
-#define Rectangle __Windows_Rectangle
+// Hack to prevent windgi.h's Rectangle function and the Rectangle class from conflicting
+# define Rectangle __Windows_Rectangle
 # include <GL/gl.h>
-#undef Rectangle
+# undef Rectangle
 #elif __has_include(<OpenGL/gl.h>)
 # include <OpenGL/gl.h>
 #else

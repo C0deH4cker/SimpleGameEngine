@@ -8,7 +8,8 @@ TARBALL := $(BUILD)/$(TARNAME)
 TARCONTENTS := $(TARNAME) $(LIBNAME) include
 
 GLFW := glfw
-LIBGLFW := $(BUILD)/$(GLFW)/src/libglfw3.a
+GLFWBUILD := $(BUILD)/$(GLFW)
+LIBGLFW := $(GLFWBUILD)/src/libglfw3.a
 
 SOIL := SOIL
 SOILBUILD := $(BUILD)/SOIL
@@ -23,7 +24,7 @@ BUILT := $(addprefix $(BUILD)/, $(OBJS))
 OBJS += $(SOILOBJS)
 BUILT += $(SOILBUILT)
 
-DIRS := $(BUILD) $(SOILBUILD) $(BUILD)/include
+DIRS := $(BUILD) $(SOILBUILD) $(GLFWBUILD) $(BUILD)/include
 HEADERS := $(wildcard include/*.h) $(GLFW)/include/GLFW
 
 CXXFLAGS := -Wall \
@@ -65,9 +66,8 @@ headers: $(HEADERS) | $(BUILD) $(BUILD)/include
 $(DIRS):
 	mkdir -p $@
 
-$(LIBGLFW):
-	mkdir -p $(BUILD)/$(GLFW)
-	cd $(BUILD)/$(GLFW); cmake $(CMAKEFLAGS) ../../$(GLFW); make glfw
+$(LIBGLFW): | $(GLFWBUILD)
+	cd $(GLFWBUILD); cmake $(CMAKEFLAGS) ../../$(GLFW); cmake --build . -- glfw
 
 glfwobjs: $(LIBGLFW) | $(BUILD)
 	$(eval ARCHIVED := $(filter %.o %.obj, $(shell $(AR) -t $<)))
