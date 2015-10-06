@@ -191,8 +191,8 @@ void sge::_cb_mousebutton(GLFWwindow* w, int button, int action, int mods) {
 
 void sge::_cb_cursorpos(GLFWwindow* w, double x, double y) {
 	Game& g = *Game::instance();
-	g.mouse = {x, y};
-	g.mouseMoved({x, y});
+	g.mouse = {static_cast<float>(x), static_cast<float>(y)};
+	g.mouseMoved({static_cast<float>(x), static_cast<float>(y)});
 }
 
 void sge::_cb_cursorenter(GLFWwindow* w, int dir) {
@@ -200,7 +200,7 @@ void sge::_cb_cursorenter(GLFWwindow* w, int dir) {
 }
 
 void sge::_cb_scroll(GLFWwindow* w, double x, double y) {
-	Game::instance()->scrolled({x, y});
+	Game::instance()->scrolled({static_cast<float>(x), static_cast<float>(y)});
 }
 
 void sge::_cb_key(GLFWwindow* w, int key, int scancode, int action, int mods) {
